@@ -1,2 +1,2 @@
 # Relawan-Kita
-memudahkan Pengerjaan Tugas Sistem Basis Data Informatika Unsoed
+Memudahkan Pengerjaan Tugas Sistem Basis Data Informatika Unsoed
