@@ -1,20 +1,23 @@
 <?php
     $host = 'localhost';
-    $user = 'root';
+    $admin = 'root';
     $password = '';
-    $db = 'relawankita';
-    $charset = 'utm8mb4';
+    $db = 'relawan_kita';
 
     // Data Source Name untuk fungsi PDO
-    $dsn = "mysql:host=$host;dbname=$db;charset=$charset";
+    $dsn = "mysql:host=$host;dbname=$db";
 
-    try {
-        $PDO = new PDO($dsn, $user, $password);
-        echo "Hello Database, Connected Succesfully";
-    } catch (PDOException $e) {
-        echo "<h3 class='text-center'>Database Connection failed<h3>";
+    try{
+        $pdo = new PDO($dsn, $admin, $password);
+        $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+    } catch(PDOException $e) {
         throw new PDOException($e->getMessage());
     }
 
+    require_once 'crud.php';
+    require_once 'user.php';
+    $crud = new crud($pdo);
+    $user = new user($pdo);
     
+    $user->insertUser("admin@admin.com","admin", "Admin", "admin", "Laki-laki", "Griya Asri 1", "08986866871", "");
 ?>

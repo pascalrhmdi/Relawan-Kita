@@ -1,0 +1,98 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+body {
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  height: 100%;
+  background-color: rgb(252, 252, 252);
+
+}
+
+p {
+  font-size: 14px;
+}
+
+small {
+  font-size: 12px;
+}
+
+h5 {
+  font-size: 18px;
+}
+
+h6 {
+  font-size: 16px;
+}
+
+nav.navbar {
+  transition: ease-in-out 0.3s;
+  box-shadow: 0px 5px 5px -5px rgba(0, 0, 0, 0.4);
+}
+
+nav.navbar:hover {
+  background-color: rgb(255, 255, 255, 1);
+  box-shadow: 0px 10px 5px -5px rgba(58, 58, 58, 0.5);
+}
+
+.nav-item {
+  border-radius: 12px;
+  transition: ease-in-out 0.3s;
+}
+
+.nav-item:hover {
+  background-color: rgba(134, 133, 133, 0.3);
+}
+
+.bg-color-red {
+  background-color: #DF202E !important;
+}
+
+.btn-dark {
+  width: 100%;
+  transition: ease-in-out 0.2s !important;
+}
+
+button.btn-dark:hover {
+  background-color: white;
+  color: black;
+}
+/* .navbar-brand {
+  font-family: "Pacifio", cursive;
+} */
+
+main a.no-effect-link, a.no-effect-link:hover {
+  color: black;
+  text-decoration: none;
+}
+
+a, a:hover {
+  color:#DF202E;
+  text-decoration: none;
+}
+
+.form-container {
+  background-color: rgb(255, 255, 255);
+  border-radius: 10px;
+}
+
+img.img-fluid {
+  border-bottom-left-radius: 10px;
+  border-top-left-radius: 10px;
+}
+div.form-row .transparent {
+  background-color: rgba(236, 236, 236, 0.1);
+}
+
+footer {
+  background-color: rgba(189,189,189,.8);
+}
+
+@media only screen and (max-width: 768px) {
+  img.img-fluid {
+    border-top-left-radius: 15px;
+    border-top-right-radius: 15px;
+    border-bottom-left-radius: 0px;
+  }
+}
