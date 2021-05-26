@@ -1,18 +1,20 @@
 <?php
-    $title = 'Edit User';
+    $title = 'Edit Profil';
 
     require_once 'includes/header.php';
     require_once 'db/connect.php';
-    require_once './includes/auth_check.php';
 
-    if(isset($_GET['id'])){
-        $id_pengguna = $_GET['id'];
-
-        // Fetch Data user
-        $result = $user->getUserbyId($id_pengguna);
+    if(isset($_SESSION['role'])){
+        if ($_SESSION['role'] != 'volunteer') header("Location: CariAktivitas.php");
     } else {
-        header("Location: Admin-Acara.php");
+        header("Location: login.php");
     }
+
+    $id_pengguna = $_SESSION['id_pengguna'];
+
+     // Fetch Data Organisasi
+     $result = $pdo->query("SELECT * FROM pengguna WHERE id_pengguna = $id_pengguna")->fetch();    
+    
 
     if(isset($_GET['EditUser'])){
         if ($_GET['EditUser'] == 'failed') {
@@ -27,8 +29,9 @@
     <div class="col-5">
         <h1 class="text-center mb-4"><?= $title ?> </h1>
         <form action="functions/edit-user.php" method="post">
-            <!-- Email -->
             <input type="hidden" name="id_pengguna" value="<?= $id_pengguna;?>">
+            <input type="hidden" value="volunteer" name="role">
+            <!-- Email -->
             <!-- <div class="form-group mb-3 d-flex flex-column">
                 <label for="email" class="mb-1">Email address *</label>
                 <input required type="email" class="form-control" id="email" name="email" value = "<?= $result['email'] ?>" >
@@ -37,7 +40,6 @@
                 <label for="password" class="mb-1">Password *</label>
                 <input required type="password" class="form-control" id="password" name="password"  value = "<?= $result['password'] ?>" >
             </div> -->
-            <input type="hidden" value="volunteer" name="role">
             <div class="form-group mb-3  d-flex flex-column">
                 <label for="nama" class="mb-1">Nama Lengkap *</label>
                 <input required type="text" class="form-control" id="nama" name="nama"  value = "<?= $result['nama'] ?>" >
@@ -48,7 +50,7 @@
             </div>
             <div class="form-group  mb-3 d-flex flex-column">
                 <label for="tanggal_lahir" class="mb-1">Tanggal Lahir</label>
-                <input type="date" class="form-control" id="tanggal_lahir" name="tanggal_lahir"  value = "<?= $result['tanggal_lahir'] ?>" >
+                <input type="date" class="form-control" id="tanggal_lahir" name="tanggal_lahir"  value = "<?= $result['tanggal_lahir'] ?>" max="<?= date("Y-m-d"); ?>">
             </div>
             <div class="formgroup  mb-3">
                 <label class="mb-1">Jenis Kelamin *</label>
@@ -83,7 +85,7 @@
             <hr class="my-4">
 
             <!-- Kalimat Kembali -->
-            <h5 class="text-center">Kembali ke <a style="font-size: 18px;" href="Admin-User.php">List User</a></h5>
+            <h5 class="text-center">Kembali ke <a style="font-size: 18px;" href="CariAktivitas.php">Cari Aktivitas</a></h5>
         </form>
     </div>
 </div>

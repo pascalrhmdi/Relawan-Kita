@@ -10,7 +10,7 @@ body {
 
 }
 
-p {
+p, a, label {
   font-size: 14px;
 }
 
@@ -45,6 +45,45 @@ nav.navbar:hover {
   background-color: rgba(134, 133, 133, 0.3);
 }
 
+#BuatAkun {
+  border-radius: 5px;
+  border: 2px solid white;
+  transition: ease-in-out .3s;
+}
+
+#BuatAkun:hover {
+  background-color: white;
+  color: #DF202E;
+}
+
+#navbarDarkDropdownMenuLink {
+  color: white;
+  transition: ease-in-out .3s;
+}
+
+#navbarDarkDropdownMenuLink:hover {
+  color: #DF202E ;
+}
+
+.not-allowed {
+  cursor: not-allowed ;
+  pointer-events: all !important;
+}
+
+main a.no-effect-link, a.no-effect-link:hover {
+  color: black;
+  text-decoration: none;
+}
+
+th, td {
+  font-size: 14px;
+}
+
+a, a:hover {
+  color:#DF202E;
+  text-decoration: none;
+}
+
 .bg-color-red {
   background-color: #DF202E !important;
 }
@@ -58,23 +97,15 @@ button.btn-dark:hover {
   background-color: white;
   color: black;
 }
-/* .navbar-brand {
-  font-family: "Pacifio", cursive;
-} */
-
-main a.no-effect-link, a.no-effect-link:hover {
-  color: black;
-  text-decoration: none;
-}
-
-a, a:hover {
-  color:#DF202E;
-  text-decoration: none;
-}
 
 .form-container {
   background-color: rgb(255, 255, 255);
   border-radius: 10px;
+}
+
+.form-control:focus {
+  border-color: #DF202E;
+  box-shadow: 0 0 0 0.2rem rgb(97, 186, 221);
 }
 
 img.img-fluid {

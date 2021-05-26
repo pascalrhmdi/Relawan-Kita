@@ -72,5 +72,40 @@
                     return false;
             }
         }
+
+        // Untuk Edit User
+        public function getUserbyId($id_pengguna){
+            try{
+                $sql = "SELECT * FROM pengguna WHERE id_pengguna = :id_pengguna AND role = 'volunteer'";
+                $stmt = $this->db->prepare($sql);
+                $stmt->bindparam(':id_pengguna',$id_pengguna);
+            
+                $stmt->execute();
+                $result = $stmt->fetch();
+                return $result;
+            }catch (PDOException $e) {
+                    echo $e->getMessage();
+                    return false;
+            }
+        }
+
+        public function updateUser($id_pengguna, $nama, $jenis_kelamin, $alamat, $nomor_telepon, $tanggal_lahir){
+            try {
+                $sql = "UPDATE `pengguna` SET `nama`= :nama, `jenis_kelamin`= :jenis_kelamin, `alamat`= :alamat, `nomor_telepon`= :nomor_telepon, `tanggal_lahir`= :tanggal_lahir WHERE id_pengguna = :id_pengguna";
+                $stmt = $this->db->prepare($sql);
+                $stmt->bindparam(':id_pengguna', $id_pengguna);
+                $stmt->bindparam(':nama', $nama);
+                $stmt->bindparam(':jenis_kelamin', $jenis_kelamin);
+                $stmt->bindparam(':alamat', $alamat);
+                $stmt->bindparam(':nomor_telepon', $nomor_telepon);
+                $stmt->bindparam(':tanggal_lahir', $tanggal_lahir);
+
+                $stmt->execute();
+                return true;
+            } catch (PDOException $e) {
+                echo $e->getMessage();
+                return false;
+            }
+        }
     }
 ?>
