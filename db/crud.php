@@ -60,18 +60,17 @@ class crud
     public function insertOrganisasi($email, $password, $role, $nama, $deskripsi_organisasi, $tahun_berdiri)
     {
         try {
-            $result = $this->getOrganisasibyEmail($email);
+            $result = $this->getTotalOrganisasibyEmail($email);
             if ($result > 0) {
                 return false;
             } else {
-                $new_password = md5($password . $email);
                 // define sql statement to be executed
-                $sql = "INSERT INTO organisasi (`email`, `password`, `role`, `nama`, `deskripsi_organisasi`, `tahun_berdiri`) VALUES (:email, :new_password, :role, :nama, :deskripsi_organisasi, :tahun_berdiri)";
+                $sql = "INSERT INTO organisasi (`email`, `password`, `role`, `nama`, `deskripsi_organisasi`, `tahun_berdiri`) VALUES (:email, :password, :role, :nama, :deskripsi_organisasi, :tahun_berdiri)";
                 //prepare the sql statement for execution
                 $stmt = $this->db->prepare($sql);
                 // bind all placeholders to the actual values
                 $stmt->bindparam(':email', $email);
-                $stmt->bindparam(':password', $new_password);
+                $stmt->bindparam(':password', $password);
                 $stmt->bindparam(':role', $role);
                 $stmt->bindparam(':nama', $nama);
                 $stmt->bindparam(':deskripsi_organisasi', $deskripsi_organisasi);
@@ -193,10 +192,10 @@ class crud
         }
     }
 
-    public function getOrganisasibyEmail($email)
+    public function getTotalOrganisasibyEmail($email)
     {
         try {
-            $sql = "SELECT count(*) as num from organisasi where email = :email";
+            $sql = "SELECT COUNT(*) AS num FROM organisasi WHERE email = :email";
             $stmt = $this->db->prepare($sql);
             $stmt->bindparam(':email', $email);
 

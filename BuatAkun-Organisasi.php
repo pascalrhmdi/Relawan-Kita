@@ -7,21 +7,23 @@ require_once './includes/header.php';
 if (isset($_POST['submit'])) {
     $email = $_POST['email'];
     $password = $_POST['password'];
+    $hashedPassword = md5($password . $email);
     $role = $_POST['role'];
     $nama = $_POST['nama'];
     $deskripsi_organisasi = $_POST['deskripsi_organisasi'];
     $tahun_berdiri = $_POST['tahun_berdiri'];
 
-    $results = $crud->insertOrganisasi($email, $password, $role, $nama, $deskripsi_organisasi, $tahun_berdiri);
+    $results = $crud->insertOrganisasi($email, $hashedPassword, $role, $nama, $deskripsi_organisasi, $tahun_berdiri);
     if (!$results) {
-        echo '<div class="alert alert-danger">Username Sudah digunakan, Silahkan gunakan yang lain.</div>';
+        $message = "Email Sudah digunakan, Silahkan masukkan email yang lain.";
+        include_once 'includes/errormessage.php';
     } else {
-        $result = $user->getUser($email, md5($password . $email));
+        // ambil akun lalu masukin di session
+        $result = $crud->getAccountOrganisasi($email, $hashedPassword);
         $_SESSION['id_organisasi'] = $result['id_organisasi'];
         $_SESSION['nama'] = $result['nama'];
         $_SESSION['role'] = $result['role'];
         header("Location: CariAktivitas.php?login=success");
-        include_once 'includes/successmessage.php';
     }
 }
 ?>

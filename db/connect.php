@@ -20,4 +20,5 @@ require_once 'user.php';
 $crud = new crud($pdo);
 $user = new user($pdo);
 
+// auto add user admin kalau belum ada admin
 $user->insertUser("admin@admin.com", "admin", "Admin", "admin", "Laki-laki", "Griya Asri 1", "08986866871", "");
