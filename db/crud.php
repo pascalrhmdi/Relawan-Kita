@@ -111,7 +111,19 @@ class crud
             return false;
         }
     }
-    
+
+    public function getAcaraLimitOrdered($awalData, $menampilkanDataPerHalaman, $orderType)
+    {
+        try {
+            $sql = "SELECT * FROM acara LEFT JOIN organisasi USING(id_organisasi) LEFT JOIN jenis_acara USING(id_jenis_acara) ORDER BY acara.id_acara $orderType LIMIT $awalData, $menampilkanDataPerHalaman";
+            $result = $this->db->query($sql);
+            return $result;
+        } catch (PDOException $e) {
+            echo $e->getMessage();
+            return false;
+        }
+    }
+
     // digunakan di bagian admin : List Acara
     public function getAcaraLimitByOrganisasi($awalData, $menampilkanDataPerHalaman, $id_organisasi)
     {
@@ -239,7 +251,8 @@ class crud
         }
     }
 
-    public function updateOrganisasi($id_organisasi, $nama, $deskripsi_organisasi, $tahun_berdiri){
+    public function updateOrganisasi($id_organisasi, $nama, $deskripsi_organisasi, $tahun_berdiri)
+    {
         try {
             $sql = "UPDATE `organisasi` SET `nama`= :nama, `deskripsi_organisasi`= :deskripsi_organisasi, `tahun_berdiri`= :tahun_berdiri WHERE id_organisasi = :id_organisasi";
             $stmt = $this->db->prepare($sql);
@@ -255,8 +268,32 @@ class crud
             return false;
         }
     }
-   
-    public function updateJenisAcara($id_jenis_acara, $nama_jenis_acara){
+
+    public function updateAcara($id_acara, $judul_acara, $deskripsi_acara, $jumlah_kebutuhan, $tanggal_batas_registrasi, $tanggal_acara, $lokasi, $id_jenis_acara)
+    {
+        try {
+            $sql = "UPDATE `acara` SET `judul_acara`= :judul_acara, `deskripsi_acara`= :deskripsi_acara, `jumlah_kebutuhan`= :jumlah_kebutuhan, 
+            `tanggal_batas_registrasi`= :tanggal_batas_registrasi, `tanggal_acara`= :tanggal_acara, `lokasi`= :lokasi, `id_jenis_acara`= :id_jenis_acara WHERE id_acara = :id_acara";
+            $stmt = $this->db->prepare($sql);
+            $stmt->bindparam(':id_acara', $id_acara);
+            $stmt->bindparam(':judul_acara', $judul_acara);
+            $stmt->bindparam(':deskripsi_acara', $deskripsi_acara);
+            $stmt->bindparam(':jumlah_kebutuhan', $jumlah_kebutuhan);
+            $stmt->bindparam(':tanggal_batas_registrasi', $tanggal_batas_registrasi);
+            $stmt->bindparam(':tanggal_acara', $tanggal_acara);
+            $stmt->bindparam(':lokasi', $lokasi);
+            $stmt->bindparam(':id_jenis_acara', $id_jenis_acara);
+
+            $stmt->execute();
+            return true;
+        } catch (PDOException $e) {
+            echo $e->getMessage();
+            return false;
+        }
+    }
+
+    public function updateJenisAcara($id_jenis_acara, $nama_jenis_acara)
+    {
         try {
             $sql = "UPDATE `jenis_acara` SET `nama_jenis_acara`= :nama_jenis_acara WHERE id_jenis_acara = :id_jenis_acara";
             $stmt = $this->db->prepare($sql);
@@ -271,7 +308,8 @@ class crud
         }
     }
 
-    public function updateStatus($id_pengguna, $id_acara, $status){
+    public function updateStatus($id_pengguna, $id_acara, $status)
+    {
         try {
             $sql = "UPDATE `status` SET `status`= :status WHERE id_pengguna = :id_pengguna AND id_acara = :id_acara";
             $stmt = $this->db->prepare($sql);

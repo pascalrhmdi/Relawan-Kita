@@ -11,10 +11,8 @@
         
         //Redirect to list
         $result
-        ? header('Location: ../admin-Acara.php?deleteacara=success')
-        : header('Location: ../admin-Acara.php?deleteacara=failed');
+        ? header('Location: ../organisasi/listacara.php?deleteacara=success')
+        : header('Location: ../organisasi/listacara.php?deleteacara=failed');
     }else{
-        header("Location: ../admin-Acara.php");
+        header("Location: ../organisasi/listacara.php");
     }
-
-?>
