@@ -1,14 +1,13 @@
 -- phpMyAdmin SQL Dump
--- version 4.9.1
+-- version 5.0.2
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Waktu pembuatan: 26 Bulan Mei 2021 pada 09.12
--- Versi server: 10.4.8-MariaDB
--- Versi PHP: 7.3.11
+-- Generation Time: Jun 21, 2021 at 12:37 PM
+-- Server version: 10.4.14-MariaDB
+-- PHP Version: 7.4.9
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
-SET AUTOCOMMIT = 0;
 START TRANSACTION;
 SET time_zone = "+00:00";
 
@@ -24,7 +23,7 @@ SET time_zone = "+00:00";
 
 DELIMITER $$
 --
--- Prosedur
+-- Procedures
 --
 CREATE DEFINER=`root`@`localhost` PROCEDURE `deleteAcara` (IN `id` INT(11))  BEGIN
 	START TRANSACTION;
@@ -62,42 +61,40 @@ DELIMITER ;
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `acara`
+-- Table structure for table `acara`
 --
 
 CREATE TABLE `acara` (
   `id_acara` int(11) NOT NULL,
   `judul_acara` varchar(50) NOT NULL,
   `deskripsi_acara` text NOT NULL,
-  `jumlah_kebutuhan` tinyint(3) UNSIGNED NOT NULL,
+  `jumlah_kebutuhan` tinyint(5) UNSIGNED NOT NULL,
   `tanggal_batas_registrasi` date NOT NULL,
   `tanggal_acara` date NOT NULL,
   `lokasi` varchar(50) NOT NULL,
+  `cover` varchar(255) NOT NULL,
   `id_jenis_acara` int(11) NOT NULL,
   `id_organisasi` int(11) NOT NULL
-) ;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Dumping data untuk tabel `acara`
+-- Dumping data for table `acara`
 --
 
-INSERT INTO `acara` (`id_acara`, `judul_acara`, `deskripsi_acara`, `jumlah_kebutuhan`, `tanggal_batas_registrasi`, `tanggal_acara`, `lokasi`, `id_jenis_acara`, `id_organisasi`) VALUES
-(13, 'Ngabdi di kampung rambutan', 'Mengabdi Di Kampung Rambutan Bersama Kami dari indonesia untuk indonesia.\r\nDibutuhkan \r\n2 Orang untuk menjadi bendahara,\r\n2 Orang untuk menjadi Sekretaris,\r\n4 Orang untuk menjadi Staff Acara\r\n10 Orang untuk menjadi Staff PDD.\r\nKonfirmasi Ke nomor 08986866877', 30, '2000-12-12', '1222-12-12', 'Indramayu', 1, 2),
-(14, 'Open Recruitment OGT Staff', 'Kami Membuka Open Recruitmen untuk berkontribusi dalam ikatan keluarga Kami dari indonesia untuk indonesia.\r\nDibutuhkan \r\n2 Orang untuk menjadi bendahara,\r\n2 Orang untuk menjadi Sekretaris,\r\n4 Orang untuk menjadi Staff Acara\r\n10 Orang untuk menjadi Staff PDD.\r\nKonfirmasi Ke nomor 08986866877', 31, '2000-12-12', '1212-12-12', 'Indramayu', 16, 3),
-(15, 'Proklamator Indonesia', 'Indonesia Merindukan sosok proklamator negeri. Kami disini akan mengadakan event agar masyarakat indonesia dapat menjadi pemimpin yang baik.\r\nDibutuhkan \r\n2 Orang untuk menjadi bendahara,\r\n2 Orang untuk menjadi Sekretaris,\r\n4 Orang untuk menjadi Staff Acara\r\n10 Orang untuk menjadi Staff PDD.\r\nKonfirmasi Ke nomor 08986866877', 100, '1999-12-12', '1261-12-12', 'Cirebon', 14, 1),
-(16, 'Open Recruitment OGT Staff', 'Indonesia Merindukan sosok proklamator negeri. Kami disini akan mengadakan event agar masyarakat indonesia dapat menjadi pemimpin yang baik.\r\nDibutuhkan \r\n2 Orang untuk menjadi bendahara,\r\n2 Orang untuk menjadi Sekretaris,\r\n4 Orang untuk menjadi Staff Acara\r\n10 Orang untuk menjadi Staff PDD.\r\nKonfirmasi Ke nomor 08986866877', 31, '2010-12-12', '1242-12-12', 'Indramayu', 15, 3),
-(17, 'Proklamator Malaysia Merdeka', 'Malaysia Merindukan sosok proklamator negeri. Kami disini akan mengadakan event agar masyarakat indonesia dapat menjadi pemimpin yang baik.\r\nDibutuhkan \r\n2 Orang untuk menjadi bendahara,\r\n2 Orang untuk menjadi Sekretaris,\r\n4 Orang untuk menjadi Staff Acara\r\n10 Orang untuk menjadi Staff PDD.\r\nKonfirmasi Ke nomor 08986866877', 99, '1959-12-12', '1291-12-12', 'Cirebon', 17, 2),
-(18, 'Open Bakat Anak Muda', 'Indonesia Mencari Bakat!!! \r\nDicari anak muda yang memiliki bakat setinggi langit dan keinginan tinggi untuk menjadi sosok idola.\r\nDibutuhkan \r\n2 Orang untuk menjadi bendahara,\r\n2 Orang untuk menjadi Sekretaris,\r\n4 Orang untuk menjadi Staff Acara\r\n10 Orang untuk menjadi Staff PDD.\r\nKonfirmasi Ke nomor 08986866877', 51, '2010-12-12', '1242-12-12', 'Indramayu', 16, 3),
-(19, 'Proklamator Thailand Merdeka', 'Thailand Darurat Keadilan!!!\r\nJadikan Thailand Merdeka, Merdeka atau banci!\r\n2 Orang untuk menjadi bendahara,\r\n2 Orang untuk menjadi Sekretaris,\r\n4 Orang untuk menjadi Staff Acara\r\n10 Orang untuk menjadi Staff PDD.\r\nKonfirmasi Ke nomor 08986866877', 99, '1959-12-12', '1291-12-12', 'Cirebon', 16, 2),
-(23, 'Bangun Desa Purworejo', 'Calling For Indonesian volunteer!!!\r\nJadikan Thailand Merdeka, Merdeka atau banci!\r\n2 Orang untuk menjadi bendahara,\r\n2 Orang untuk menjadi Sekretaris,\r\n4 Orang untuk menjadi Staff Acara\r\n10 Orang untuk menjadi Staff PDD.\r\nKonfirmasi Ke nomor 08986866877', 77, '2021-05-25', '2021-05-31', 'Purworejo', 16, 1),
-(29, 'ISMKI Mengabdi Kepada Negeri', 'Mahasiswa Dokter Seluruh Indonesia Mengabdi Kepada Negeri dengan memberikan jasa gratis mereka kepada orang orang yang kurang mampu', 10, '2021-05-28', '2021-05-18', 'Indonesia', 22, 5),
-(30, 'Pertamina Mengajar', 'Program Tahunan Pertamina Indonesia yang tahun ini diselenggarakan di Indramayu, Jawa Barat.\r\nDibutuhkan 10 Relawan Berpendidikan minimal D3 dengan mata pelajaran:\r\n2 Bahasa Inggris\r\n3 Bahasa Jepang\r\n1 Bahasa Indonesia\r\n2 Matematika\r\n2 Prakarya', 10, '2021-05-30', '2021-05-31', 'Indramayu', 2, 1),
-(31, 'Ulang Tahun PT Paragon ke 16', 'Dibutuhkan Relawan', 50, '2021-05-30', '2021-05-31', 'Purbalingga', 16, 2);
+INSERT INTO `acara` (`id_acara`, `judul_acara`, `deskripsi_acara`, `jumlah_kebutuhan`, `tanggal_batas_registrasi`, `tanggal_acara`, `lokasi`, `cover`, `id_jenis_acara`, `id_organisasi`) VALUES
+(1, 'Pilah sampahmu bersama Zero Hero', 'Nama Pekerjaan : Zero Hero\r\nRelawan Dibutuhkan : 100 orang\r\nTotal Jam Kerja : 2 jam\r\nTugas Relawan :\r\nMemfasilitasi masyarakat untuk memberikan informasi mengenai pemilahan sampah yang benar dan bank sampah terdekat diregionalnya.\r\n\r\nSarana yang digunakan : media sosial dan whatsap\r\nKriteria Relawan : \r\n- berjiwa muda\r\n- aktif\r\n- punya jiwa sosial dan kepedulian terhadap lingkungan hidup\r\n- bersedia untuk menjadi inisiator didaerahnya \r\nPerlengkapan Relawan : \r\n- handphone\r\n- media sosial aktif\r\n- whatsapp\r\n\r\nInformasi Tambahan :\r\nhanya sebagai fasilitator terkait pemberian informasi kepada masyarakat tentang bank sampah terdekat dan proses pemilahan sampah yang benar dengan memaksimalkan media sosial.', 100, '2021-07-15', '2021-07-18', 'Regional Masing - Masing', '60d069ee02f17.jpg', 25, 8),
+(2, 'Renovasi Fasilitas Masjid Pedalaman', 'Assesment Masjid Pedalaman\r\nRelawan Dibutuhkan : 8 orang\r\nTotal Jam Kerja : 100 jam\r\nTugas Relawan :\r\n- Menemukan masjid-masjid di pedalaman yang layak dibantu untuk renovasi atau perbaikan fasilitas penunjang\r\n- Mengumpulkan dokumentasi\r\n- membuat profil wilayah lokasi\r\nKriteria Relawan :\r\n- Berada di provinsi wilayah yang diusulkan\r\n- bersedia mendampingi project hingga selesai\r\n- tidak terikat dengan lembaga lain\r\nPerlengkapan Relawan :\r\n- Hp android\r\n- Sepeda motor\r\nDomisili : Riau', 8, '2021-06-26', '2021-06-29', 'Pedalaman Riau', '60d06822174fc.jpg', 13, 6),
+(3, 'Katalisator Muda Indonesia Team 2021-2022', 'Nama Pekerjaan : Katalisator Muda Indonesia Team 2021 - 2022\r\nRelawan Dibutuhkan : 14 orang\r\nTotal Jam Kerja : 114 jam\r\nTugas Relawan: \r\nMengurus organisasi Katalisatro Muda Indonoesia dalam menjalankan visi misinya selama periode 2021 - 2022\r\nKriteria Relawan :\r\n1. Berusia 17 - 25 tahun\r\n2. Berdomisili di area Jabodetabek\r\n3. Aktif Responsif, dan flexilitas terhadap waktu\r\n4. Mengikuti proses pendaftaran\r\n5. Mengikuti dan lulus \"Trainee Program\" selama 2 minggu di KaMu Indonesia.\r\n6. Berkomitmen aktif selama 1 tahun setelah dinyatakan lulus.\r\nPerlengkapan Relawan : \r\n- Laptop dan kuota\r\nDomisili : DKI Jakarta\r\n\r\nInformasi Tambahan :\r\nKalian juga bisa mengisi formulir pendaftaran di Bit.ly/KaMuOprec2021', 14, '2021-06-23', '2021-07-25', 'Aktivitas Virtual', '60d0679913cd3.png', 16, 5),
+(4, 'SUMBER DAYA ALAM LAUT KITA', 'Nama Pekerjaan : AKTIVIS LINGKUNGAN LAUT\r\nRelawan Dibutuhkan : 2000 orang\r\nTotal Jam Kerja : 8 jam\r\nTugas Relawan :\r\nMENJAGA, MEMBERSIHKAN, MELESTARIKAN SUMBER DAYA ALAM (SDA) LAUT, DAN DOKUMENTASI KEGIATAN\r\nKriteria Relawan :\r\n1. LAKI-LAKI/PEREMPUAN\r\n2. USIA 5 TAHUN KEATAS\r\n3. BERBADAN SEHAT DAN BUGAR\r\nPerlengkapan Relawan :\r\nSAPU, TEMPAT SAMPAH, DLL\r\nInformasi Tambahan :\r\nMASING-MASING RELAWAN MENDOKUMENTASIKAN KEGIATAN DI LINGKUNGAN LAUT', 255, '2021-07-25', '2021-08-08', 'Aktivitas Virtual', '60d0691a25e36.jpg', 25, 7),
+(5, 'Menjadi Tutor Inspirasi Anak Indonesia', 'Inspiration Factory Foundation lagi cari orang yang tertarik menginspirasi anak-anak sambil dapat teman baru nih, kamu kah orangnya? Di kegiatan ini teman-teman bisa menginspirasi anak-anak secara online dan bisa kenalan sama volunteers dari berbagai kota di Indonesia.. seru kan? Kapan lagi bisa dapat banyak teman baru dan menginspirasi saat di rumah aja.\r\n \r\nKalau kamu: \r\n- Minimal 18 tahun\r\n- Suka dengan anak-anak\r\n- Mau ubah weekend-nya lebih berfaedah \r\n \r\nYuk teman-teman buruan daftar kegiatan ini. Karena di tanggal 29 Mei 2021 akan ada InspiraLearn Training yang menarik untuk teman-teman ikuti sebelum ikut menginspirasi anak-anak 😁\r\n \r\nLesgooow!~\r\n \r\nFor more information:\r\nIG: @inspirationfactoryfoundation\r\nWA: 081317661488 (chat only)', 100, '2021-06-18', '2021-07-20', 'Kegiatan via Zoom', '60d066146fcd4.png', 2, 3),
+(6, 'Ekspedisi Bakti Milenial - Lombok', 'Halo Sobat Milenial,\r\nKalian mau ikutan pengabdian masyarakat sekaligus jalan-jalan ke Gili Asahan, Lombok?\r\nIya Lombok, surga wisata laut di Nusa Tenggara Barat dengan kekayaan dan keindahan biota laut yang sangat luar biasa.\r\n\r\nBakti Milenial merupakan sebuah program yang dirancang untuk mengajak kaum muda untuk berbagi pengalaman, mengembangkan inovasi dan gagasan ide guna memberikan solusi yang berkelanjutan. Melalui kegiatan pengabdian lintas disiplin ilmu yang terbuka untuk masyarakat umum. \r\n\r\nBentuk kegiatan :\r\n🔰 Local Potential Development\r\n🔰 Environment Optimization\r\n🔰 Milenial Mengajar\r\n🔰 Health and Nutrition Care\r\n🔰 Explore trip gratis di Lombok, Nusa Tenggara Barat\r\n\r\nLokasi kegiatan :  Gili Asahan, Lombok Barat, NTB (13 - 23 Agustus 2021)\r\n\r\n\r\nFASILITAS RELAWAN TERPILIH\r\nRelawan terbaik mendapatkan fasilitas berikut yang dibiayai oleh Panitia (Fully Funded)\r\n✅Transportasi PP dari Kota asal ke meeting point\r\n✅Transportasi PP dari meeting point (Surabaya) – Lombok\r\n✅Transportasi lokal \r\n✅Program Pemberdayaan Masyarakat Lintas Bidang di Lombok\r\n✅Konsumsi selama pengabdian\r\n✅Tempat tinggal selama pengabdian\r\n✅Wisata sekitar Gili Asahan, Desa Sade, Pantai Kuta Mandalika (rekreasi, snorkeling, dll)\r\n✅Sarana prasarana program\r\n✅Sertifikat\r\n✅Kaos & Atribut Kegiatan\r\n✅Pendampingan pembuatan program\r\n✅Perizinan ke instansi\r\n\r\n\r\nInilah saatnya, untuk menempa integritas diri melalui pengabdian di tapal batas Negeri.\r\nMari kawan, kita beraksi !! Secuil kontribusi dari kita adalah bekal awal untuk membangun dan menata kembali negeri ini. Karena masa depan Indonesia ada di tangan aku, kamu, dan kita semua.\r\nTanpamu, semua akan biasa-biasa saja.\r\n\r\n\r\n📝Info Pendaftaran :\r\nhttp://bit.ly/daftarbaktimilenial2\r\n📝Buku Panduan dan Berkas :\r\nhttp://bit.ly/berkasbaktimilenial2\r\n\r\n📞 For more information please contact us :\r\nImelda : +6281572970680', 40, '2021-06-15', '2021-07-30', 'Desa Gili Asahan Kabupaten Lombok Barat, Nusa Teng', '60d066c3804ab.jpg', 19, 4),
+(8, 'Relawan Medis - Perawat (Profesi Ners)', 'Nama Pekerjaan : Relawan Medis - Perawat (Profesi Ners)\r\nRelawan Dibutuhkan : 21 orang\r\nTotal Jam Kerja : 8 jam\r\nTugas Relawan :\r\nMelakukan penanganan COVID-19 di berbagai fasilitas isolasi COVID-19, laboratorium kesehatan maupun rumah sakit.\r\nKriteria Relawan :\r\n1. Relawan berasal dari lulusan S1 Keperawatan Profesi Ners\r\n2. Memiliki KTP\r\n3. Memiliki ijazah\r\n4. Memiliki STR aktif/ sertifikat uji kompetensi/bukti pengumuman lulus uji kompetensi\r\n5. Memiliki BPJS Kesehatan aktif/bukti proses pengurusan BPJS Kesehatan\r\n6. Relawan berusia kurang dari  35 tahun\r\n7. Relawan dalam keadaan sehat (tidak ada riwayat penyakit pernapasan dan penyakit kronis lainnya) yang dibuktikan dengan surat keterangan sehat\r\n8. Tidak sedang hamil dan bersedia tidak hamil selama menjadi relawan\r\n9. Relawan sadar akan resiko yang mungkin dihadapi dibuktikan dengan surat sadar akan resiko\r\n10.Relawan mendapatkan izin dari orang tua atau suami/istri apabila sudah menikah dibuktikan dengan surat izin dari  orang tua/pasangan yang bersangkutan\r\n11.Tidak sedang terikat kontrak kerja pada instansi lain dan tidak sedang menjalani pendidikan formal\r\nPerlengkapan Relawan :\r\n- Handphone dengan koneksi internet.\r\nDomisili : Jawa Barat\r\n\r\nInformasi Tambahan :\r\nLokasi penempatan relawan: \r\n1. Rumah Sakit Hasan Sadikin Bandung (Kota Bandung)\r\n2. RSUD Cililin (Kab. Bandung Barat)\r\n3. RSUD Cikalong Wetan (Kab. Bandung Barat)\r\n4. RSUD Lembang (Kab. Bandung Barat)\r\n5. RSUD Soreang (Kab. Bandung)\r\n\r\n*Relawan diutamakan yang berdomisili di wilayah sekitar penempatan', 21, '2021-07-10', '2021-07-15', 'Jl. Pasteur No.38, Pasteur, Kec. Sukajadi Kota Ban', '60d06561500b3.png', 14, 2),
+(9, 'Relawan Lapangan Papua', 'Nama Pekerjaan : Relawan Lapangan\r\nRelawan Dibutuhkan : 5 orang\r\nTotal Jam Kerja: 2 jam\r\nTugas Relawan :\r\nRelawan bertugas mencari permasalahan yang ada di lingkungan sekitarnya (kesehatan, lingkungan, pendidikan, dan lain sebagainya), mengumpulkan data serta mendokumentasikan, lalu mendampingi proses kegiatan dari awal hingga akhir. \r\nKriteria Relawan :\r\n- Sedang tinggal atau berada di Provinsi Papua atau Papua Barat\r\n- Memiliki jiwa sosial yang tinggi\r\n- Aktif serta punya kendaraan pribadi\r\n- Bisa fotografi lebih diutamakan (opsional)\r\n- Berkomitmen menjadi relawan lapangan Sahabat Pedalaman\r\nPerlengkapan Relawan :\r\n- Kamera/HP\r\n- Alat tulis\r\n- Kendaraan pribadi\r\nDomisili : Papua', 5, '2021-06-03', '2021-07-10', 'Provinsi Papua Barat atau Provinsi Papua', '60d061ebdcdf5.jpg', 1, 1);
 
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `jenis_acara`
+-- Table structure for table `jenis_acara`
 --
 
 CREATE TABLE `jenis_acara` (
@@ -106,7 +103,7 @@ CREATE TABLE `jenis_acara` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Dumping data untuk tabel `jenis_acara`
+-- Dumping data for table `jenis_acara`
 --
 
 INSERT INTO `jenis_acara` (`id_jenis_acara`, `nama_jenis_acara`) VALUES
@@ -124,12 +121,13 @@ INSERT INTO `jenis_acara` (`id_jenis_acara`, `nama_jenis_acara`) VALUES
 (19, 'Pengembangan Masyarakat'),
 (20, 'Pertanian'),
 (21, 'Seni dan Budaya'),
-(22, 'Kesehatan');
+(22, 'Kesehatan'),
+(25, 'Lingkungan');
 
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `organisasi`
+-- Table structure for table `organisasi`
 --
 
 CREATE TABLE `organisasi` (
@@ -143,19 +141,23 @@ CREATE TABLE `organisasi` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Dumping data untuk tabel `organisasi`
+-- Dumping data for table `organisasi`
 --
 
 INSERT INTO `organisasi` (`id_organisasi`, `email`, `password`, `role`, `nama`, `deskripsi_organisasi`, `tahun_berdiri`) VALUES
-(1, 'pertamina@org.com', '93c5743c7af9b7072d604c70a941e028', 'organisasi', 'PT. Pertamina', 'Pertamina Persero Indramayu', 2009),
-(2, 'paragon@org.com', '2137104e0cfc04e15c57faf3353b4549', 'organisasi', 'PT PARAGON Technology and Innovation', 'PT Paragon Technology and Innovation adalah perusahaan yang bergerak di bidang kosmetik manufaktur dan telah mendapat sertifikat GMP (Good Manufacturing Practice) dengan kapasitas produksi yang besar dan formulasi yang unggul.', 1999),
-(3, 'sasi@org.com', '06415e5ff71e4aeff27f27103da5ff30', 'organisasi', 'SMAN 1 Sindang', 'Sekolah Bertaraf Internasional dari Indramayu Jawa Barat', 2012),
-(5, 'ISMKI@org.com', '7d148309d6f8a1ac6058a993ea818fe9', 'organisasi', 'Ikatan Senat Mahasiswa Kedokteran Indonesia', 'ISMI adalah Ikatan Senat Mahasiswa Kedokteran Indonesia yakni perkumpulan mahasiswa kedokteran di indonesia.', 2021);
+(1, 'sahabatpedalaman@gmail.com', 'edce01270d559346efb037919ee6fd04', 'organisasi', 'Sahabat Pedalaman', 'Sahabat Pedalaman adalah lembaga filantropi yang berfokus membantu masyarakat di daerah pedalaman dan juga 3T (Tertinggal, Terdepan, dan Terluar) di Indonesia.  Adapun bidang yang menjadi fokusk mai adalah bidang lingkungan, pendidikan, kesehatan, dan pemberdayaan masyarakat di daerah pelosok.\r\n\r\nLokasi : Marombok RT 05/RW 03 Golo Bilas, Kecamatan Komodo, Kabupaten Manggarai Barat, Nusa Tenggara Timur\r\nTelepon : 08112020222\r\nWebsite : http://www.sahabatpedalaman.org', 2018),
+(2, 'pikobar@gmail.com', '1f53784e09e6594e576d0f35a5b97377', 'organisasi', 'Pikobar', 'Pusat Koordinasi dan Informasi COVID-19 Jawa Barat (Pikobar) merupakan sebuah sistem yang dibentuk Pemerintah Daerah Provinsi Jawa Barat (Pemdaprov Jabar) untuk menyajikan informasi, data, dan visualisasi tentang penyebaran, pencegahan, dan penanggulangan COVID-19 di Jawa Barat. Informasi yang ditampilkan melalui situs web dan aplikasi mobile Pikobar tersebut meliputi perkembangan jumlah kasus, peta sebaran kasus dan lokasi fasilitas kesehatan, daftar pusat panggilan se-Jawa Barat, dan grafik data kasus COVID-19. \r\n\r\nPikobar diresmikan oleh Gubernur Jawa Barat Ridwan Kamil pada tanggal 4 Maret 2020 di Jabar Command Center, menyusul penetapan status Siaga-1 COVID-19 di wilayah Jawa Barat.', 2019),
+(3, 'inspirationfactoryfoundation@gmail.com', '87ad24ee0cfc2ce6be99855c39826a4b', 'organisasi', 'Inspiration Factory Foundation', 'The Inspiration Factory Foundation is established by two creatives Georges Hilaul and Jenny Tjoa who started off as acts of compassion to make a change, but have grown professionally while keeping its soul alive. Our vision is to inspire a generation of underprivileged children to fulfill their dreams and influence the world with this legacy. In doing this, we hope to inspire any other beings out there who are connected with us.', 2014),
+(4, 'oimc@gmail.com', 'c31cefc4eb7ab842438d5e3f77ba4051', 'organisasi', 'Organisasi Indonesia Millennial Connect', ' Indonesia Millennial Connect merupakan organisasi nirlaba pengembangan diri bagi pemuda pemudi di seluruh Indonesia, berkolaborasi dengan komunitas dan organisasi lain yang berfokus kepada tiga bidang yaitu pendidikan, sosial, dan ekonomi.', 2020),
+(5, 'katalisatormudaindonesia@gmail.com', '7f206e777a12ee5150be7f33441d3890', 'organisasi', 'Katalisator Muda Indonesia', 'Perspektif di mana setiap konflik dapat diselesaikan dengan kekerasan adalah sebuah dilema yang terus di doktrinisasi dan diimplementasikan dengan para pemuda dalam kehidupan sehari-hari mereka. Pada tahun 2019, terdapat 431.471 kasus kekerasan yang melibatkan pemuda sebagai korban dan pelaku, kasus-kasus tersebut sebagian besar terdiri dari intimidasi, kekerasan rumah tangga, kekerasan seksual, perkelahian siswa, bahkan kekerasan ekstremisme.   Katalisator Muda (KaMu) Indonesia adalah organisasi pemuda yang membantu mewujudkan lingkungan di mana setiap pemuda bisa bebas dari segala bentuk kekerasan dan dapat menyelesaikan konflik tanpa kekerasan. Dalam melakukan hal itu, KaMu berupaya mengubah perspektif bahwa kekerasan bukanlah jawaban dan mempersiapkan pemuda untuk menjadi katalis perdamaian di masyarakat meraka masing-masing melalui forum (Forum X), kampanye media (Media Y), dan pembangunan kapasitas (Hero Z).', 2018),
+(6, 'relawankebaikandesa@gmail.com', '4e442c45ef7b6a49a5e98668757d4443', 'organisasi', 'Relawan Kebaikan Desa', ' Relawan pendamping program-program peningkatan kualitas SDM Masyarakat Desa. Mencari sebanyak-banyaknya relawan untuk dapat berkontribusi di sebanyak-banyaknya desa se-Indonesia', 2020),
+(7, 'ipmtkt@gmail.com', '2c184781ba9fe71ee5bc6901c07f8f4f', 'organisasi', 'IKATAN PELAUT MALUKU TENGGARA DAN KOTA TUAL (IPMTK', 'Ikatan Pelaut Maluku Tenggara dan Kota Tual (IPMTKT), didirikan di Tual Maluku Tenggara, pada tanggal 3 April 2017, dengan berlandaskan nilai-nilai Pancasila dan UUD 1945 serta semangat Sumpah Pemuda. Pendiri ABDUL QADIR WEAR mengharapkan Putra/I Bangsa dapat menjadikan laut sebagai sumber kehidupan, dan turut serta menjadikan Indonesia sebagai \"Poros Maritim Dunia\"', 2017),
+(8, 'menolakpoenah@gmail.com', 'b4b20e005fee08f9320609b45c692b2f', 'organisasi', 'Menolak Poenah', 'sebuah pacemaker untuk menggerakan banyak nyawa agar lebih mencintai lingkungan hidup. Kami fokus pada 3 divisi: 1. Memberikan edukasi tentang environmental issues 2. Memberikan edukasi tentang dampak kerusakan lingkungan terhadap medis 3. Memberikan edukasi tentang eco friendly lifestyle', 2021);
 
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `pengguna`
+-- Table structure for table `pengguna`
 --
 
 CREATE TABLE `pengguna` (
@@ -171,22 +173,16 @@ CREATE TABLE `pengguna` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Dumping data untuk tabel `pengguna`
+-- Dumping data for table `pengguna`
 --
 
 INSERT INTO `pengguna` (`id_pengguna`, `email`, `password`, `nama`, `role`, `jenis_kelamin`, `alamat`, `nomor_telepon`, `tanggal_lahir`) VALUES
-(33, 'admin@admin.com', '29e78cb815d3d3534b8ad5382bf2c5db', 'Admin', 'admin', NULL, NULL, NULL, NULL),
-(34, 'asdasd@asdasd.com', '54cc0e9a517ef5e47ca182ec83567483', 'Muhammad Pascal Rahmadi', 'volunteer', 'Perempuan', 'Griya Asri 1 Jalan Akasia Blok A2 No.16 RT 21 RW 09', '08986866875', '2001-05-16'),
-(36, 'Pascalrahmadi@gmail.com', '06891d10f1f590c7436783c3770bb43a', 'Pascal Rahmadi', 'volunteer', 'Perempuan', NULL, NULL, '2000-12-12'),
-(38, 'pascalpascal@gmail.com', '29e2498ddd7c21c4258382c99d8c8862', 'duarmekdi', 'volunteer', 'Laki-laki', 'pascalpascal', '123123123', '2021-05-06'),
-(39, 'muhammad.rahmadi@mhs.unsoed.ac.id', 'c79c60f8d8611edcfb6560e990a98af8', 'Muhammad Pascal Rahmadi', 'volunteer', 'Laki-laki', 'Griya Asri 1 Jalan Akasia Blok A2 No.16 RT 21 RW 09', '+6289868686875', '1222-12-12'),
-(41, 'cal@cal.com', '654345b85bb6e4f369ad901c13108c2d', 'Pascal Rahmadi', 'volunteer', 'Laki-laki', 'Griya Asri 1 Jalan Akasia Blok A2 No.16 RT 21 RW 09', '08986866875', '2001-12-31'),
-(42, 'akuganteng@gmail.com', 'd040e4cd8f20a2141a796ba5b8455ad7', 'Aku Ganteng Banget gaes', 'volunteer', 'Laki-laki', 'Griya Asri 1 Jalan Akasia Blok A2 No.16 RT 21 RW 09', '08986866875', '2001-12-02');
+(1, 'admin@admin.com', '29e78cb815d3d3534b8ad5382bf2c5db', 'Admin', 'admin', 'Laki-laki', 'Griya Asri 1', '08986866871', '0000-00-00');
 
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `status`
+-- Table structure for table `status`
 --
 
 CREATE TABLE `status` (
@@ -196,25 +192,11 @@ CREATE TABLE `status` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Dumping data untuk tabel `status`
---
-
-INSERT INTO `status` (`id_pengguna`, `id_acara`, `status`) VALUES
-(36, 29, 'gagal'),
-(38, 29, 'menunggu'),
-(38, 31, 'gagal'),
-(39, 13, 'menunggu'),
-(41, 13, 'menunggu'),
-(41, 14, 'menunggu'),
-(41, 15, 'menunggu'),
-(41, 23, 'menunggu');
-
---
 -- Indexes for dumped tables
 --
 
 --
--- Indeks untuk tabel `acara`
+-- Indexes for table `acara`
 --
 ALTER TABLE `acara`
   ADD PRIMARY KEY (`id_acara`),
@@ -222,65 +204,65 @@ ALTER TABLE `acara`
   ADD KEY `fk_id_jenis_acara` (`id_jenis_acara`);
 
 --
--- Indeks untuk tabel `jenis_acara`
+-- Indexes for table `jenis_acara`
 --
 ALTER TABLE `jenis_acara`
   ADD PRIMARY KEY (`id_jenis_acara`);
 
 --
--- Indeks untuk tabel `organisasi`
+-- Indexes for table `organisasi`
 --
 ALTER TABLE `organisasi`
   ADD PRIMARY KEY (`id_organisasi`);
 
 --
--- Indeks untuk tabel `pengguna`
+-- Indexes for table `pengguna`
 --
 ALTER TABLE `pengguna`
   ADD PRIMARY KEY (`id_pengguna`),
   ADD UNIQUE KEY `unique_email` (`email`);
 
 --
--- Indeks untuk tabel `status`
+-- Indexes for table `status`
 --
 ALTER TABLE `status`
   ADD PRIMARY KEY (`id_pengguna`,`id_acara`),
   ADD KEY `fk_id_acara` (`id_acara`);
 
 --
--- AUTO_INCREMENT untuk tabel yang dibuang
+-- AUTO_INCREMENT for dumped tables
 --
 
 --
--- AUTO_INCREMENT untuk tabel `acara`
+-- AUTO_INCREMENT for table `acara`
 --
 ALTER TABLE `acara`
-  MODIFY `id_acara` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_acara` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
--- AUTO_INCREMENT untuk tabel `jenis_acara`
+-- AUTO_INCREMENT for table `jenis_acara`
 --
 ALTER TABLE `jenis_acara`
-  MODIFY `id_jenis_acara` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
+  MODIFY `id_jenis_acara` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
 
 --
--- AUTO_INCREMENT untuk tabel `organisasi`
+-- AUTO_INCREMENT for table `organisasi`
 --
 ALTER TABLE `organisasi`
-  MODIFY `id_organisasi` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id_organisasi` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
--- AUTO_INCREMENT untuk tabel `pengguna`
+-- AUTO_INCREMENT for table `pengguna`
 --
 ALTER TABLE `pengguna`
-  MODIFY `id_pengguna` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=43;
+  MODIFY `id_pengguna` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
--- Ketidakleluasaan untuk tabel pelimpahan (Dumped Tables)
+-- Constraints for dumped tables
 --
 
 --
--- Ketidakleluasaan untuk tabel `acara`
+-- Constraints for table `acara`
 --
 ALTER TABLE `acara`
   ADD CONSTRAINT `fk_id_jenis_acara` FOREIGN KEY (`id_jenis_acara`) REFERENCES `jenis_acara` (`id_jenis_acara`),
@@ -288,7 +270,7 @@ ALTER TABLE `acara`
   ADD CONSTRAINT `fk_jenis_acara` FOREIGN KEY (`id_jenis_acara`) REFERENCES `jenis_acara` (`id_jenis_acara`);
 
 --
--- Ketidakleluasaan untuk tabel `status`
+-- Constraints for table `status`
 --
 ALTER TABLE `status`
   ADD CONSTRAINT `fk_id_acara` FOREIGN KEY (`id_acara`) REFERENCES `acara` (`id_acara`),

@@ -3,6 +3,7 @@ $title = "Cari Aktivitas";
 
 require_once './db/connect.php';
 require_once './includes/header.php';
+require_once './functions/convert-date.php';
 
 if (isset($_GET['id_acara'])) {
     $id = $_GET['id_acara'];
@@ -67,7 +68,7 @@ if (isset($_POST['submit'])) {
         <div class="py-2" style="background-color: #E0E0E0;">
             <div class="container">
                 <p class="fw-bold">Deskripsi Acara</p>
-                <p><?= $r['deskripsi_acara']; ?></p>
+                <p style="white-space: pre-wrap;"><?= $r['deskripsi_acara']; ?></p>
             </div>
         </div>
     </div>
@@ -82,7 +83,7 @@ if (isset($_POST['submit'])) {
                             <path d="M11 6.5a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1zm-3 0a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1zm-5 3a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1zm3 0a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1z" />
                             <path d="M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h1a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h1V.5a.5.5 0 0 1 .5-.5zM1 4v10a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V4H1z" />
                         </svg>
-                        <p class="ms-2 mb-0"><?= $r['tanggal_acara']; ?></p>
+                        <p class="ms-2 mb-0"><?= tgl_indo($r['tanggal_acara']); ?></p>
                     </div>
                     <div class="d-flex flex-row align-items-center mb-2">
                         <svg xmlns="http://www.w3.org/2000/svg" width="17" height="17" fill="currentColor" class="bi bi-geo-alt-fill" viewBox="0 0 16 16">
@@ -94,7 +95,7 @@ if (isset($_POST['submit'])) {
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-exclamation-triangle-fill text-danger" viewBox="0 0 16 16">
                             <path d="M8.982 1.566a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767L8.982 1.566zM8 5c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995A.905.905 0 0 1 8 5zm.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2z" />
                         </svg>
-                        <p class="ms-2 mb-0 text-danger">Batas Registrasi <?= $r['tanggal_batas_registrasi']; ?></p>
+                        <p class="ms-2 mb-0 text-danger">Batas Registrasi <?= tgl_indo($r['tanggal_batas_registrasi']); ?></p>
                     </div>
                     <div class=" mt-4">
                         <form method="POST" action="" class="d-grid">

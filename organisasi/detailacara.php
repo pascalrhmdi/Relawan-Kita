@@ -175,14 +175,6 @@ $fetch_jenis_acara = $pdo->query("SELECT * FROM jenis_acara");
                                                 </div>
                                             </div>
                                         </li>
-                                        <li class="list-group-item">
-                                            <div class="row">
-                                                <label class="col-sm-4 col-form-label">Deskripsi : </label>
-                                                <div class="col-sm-8">
-                                                    <textarea name="deskripsi_acara" class="form-control" required><?= $detailAcara['deskripsi_acara']; ?></textarea>
-                                                </div>
-                                            </div>
-                                        </li>
                                     </ul>
                                 </div>
                                 <div class="col-lg-5 border-bottom">
@@ -196,6 +188,18 @@ $fetch_jenis_acara = $pdo->query("SELECT * FROM jenis_acara");
                                         </div>
                                         <small class="text-muted font-weight-italic">Ukuran gambar maksimal 1MB. Ekstensi file yang diperbolehkan : jpg, jpeg, png</small>
                                     </div>
+                                </div>
+                                <div class="col-12">
+                                    <ul class="list-group list-group-flush">
+                                        <li class="list-group-item">
+                                            <div class="row">
+                                                <label class="col-12 col-form-label">Deskripsi Acara : </label>
+                                                <div class="col-12">
+                                                    <textarea name="deskripsi_acara" class="form-control" style="min-height: 200px;" required><?= $detailAcara['deskripsi_acara']; ?></textarea>
+                                                </div>
+                                            </div>
+                                        </li>
+                                    </ul>
                                 </div>
                                 <div class="col-lg-5 ml-auto py-3">
                                     <button class="btn btn-sm btn-primary w-100" type="submit" name="submit"><i class="fa fa-save"></i> Ubah</button>

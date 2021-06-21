@@ -3,10 +3,17 @@ $title = "Cari Aktivitas";
 
 require_once './db/connect.php';
 require_once './includes/header.php';
+require_once './functions/convert-date.php';
 
 if (isset($_GET['login'])) {
     $nama = $_SESSION['nama'];
     $message = "Selamat datang $nama, Anda Berhasil Login";
+    include_once './includes/successmessage.php';
+}
+
+if (isset($_GET['EditProfilUser'])) {
+    $nama = $_SESSION['nama'];
+    $message = "Selamat $nama, Anda Berhasil Update User";
     include_once './includes/successmessage.php';
 }
 
@@ -117,7 +124,7 @@ if (isset($_GET['judul_acara'])) {
                                     <path d="M11 6.5a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1zm-3 0a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1zm-5 3a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1zm3 0a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1z" />
                                     <path d="M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h1a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h1V.5a.5.5 0 0 1 .5-.5zM1 4v10a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V4H1z" />
                                 </svg>
-                                <small class="text-muted offset-1"><?= $r['tanggal_acara']; ?></small>
+                                <small class="text-muted offset-1"><?= tgl_indo($r['tanggal_acara']); ?></small>
                             </div>
                             <div class="d-flex flex-row align-items-center">
                                 <!-- Icon Lokasi dan lokasi acara -->
@@ -141,7 +148,7 @@ if (isset($_GET['judul_acara'])) {
                 for ($i; $i <= $jumlahHalaman; $i++) :
                 ?>
                     <li class="page-item <?php if ($halamanAktif == $i) echo 'active'; ?>" <?php if ($halamanAktif == $i) echo 'aria-current="page"'; ?>>
-                        <a class="page-link" href="?halaman=<?= $i ?>"><?= $i; ?></a>
+                        <a class="page-link <?php if ($halamanAktif == $i) echo'disabled'; ?>" href="?halaman=<?= $i ?>"><?= $i; ?></a>
                     </li>
                 <?php endfor ?>
                 <li class="page-item <?php if ($halamanAktif == $jumlahHalaman) echo 'disabled'; ?>">
