@@ -1,6 +1,7 @@
 <?php
 include_once '../includes/session.php';
 require_once '../db/connect.php';
+require_once '../functions/convert-date.php';
 
 // check akun
 if (isset($_SESSION['role'])) {
@@ -102,7 +103,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     <div id="wrapper">
 
         <!-- Sidebar -->
-        <?php include("../includes/admin/sidebar.php"); ?>
+        <?php include_once("../includes/admin/sidebar.php"); ?>
         <!-- End of Sidebar -->
 
         <!-- Content Wrapper -->
@@ -112,7 +113,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             <div id="content">
 
                 <!-- Topbar -->
-                <?php include("../includes/admin/topbar.php"); ?>
+                <?php include_once("../includes/admin/topbar.php"); ?>
                 <!-- End of Topbar -->
 
                 <!-- Begin Page Content -->
@@ -172,9 +173,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                                                 <td style="max-width:150px;"><?= $r["judul_acara"]; ?></td>
                                                 <td style="max-width:150px;"><?= $r["nama_jenis_acara"]; ?></td>
                                                 <td><?= $r["jumlah_kebutuhan"]; ?></td>
-                                                <td><?= $r["tanggal_acara"]; ?></td>
+                                                <td><?= tgl_indo($r["tanggal_acara"]); ?></td>
                                                 <td style="max-width:150px;"><?= $r["lokasi"]; ?></td>
-                                                <td><?= $r["tanggal_batas_registrasi"]; ?></td>
+                                                <td><?= tgl_indo($r["tanggal_batas_registrasi"]); ?></td>
 
                                                 <td>
                                                     <!-- admin hanya mendelete acara -->

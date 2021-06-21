@@ -1,7 +1,7 @@
 <?php
 include_once './includes/session.php';
 require_once './db/connect.php';
-require_once './db/crud.php';
+require_once './functions/convert-date.php';
 
 $jmlRelawan = $pdo->query("SELECT COUNT(id_pengguna) as id FROM status WHERE status <> 'gagal'");
 $jmlOrganisasi = $pdo->query("SELECT COUNT(id_organisasi) as id  FROM organisasi");
@@ -163,7 +163,7 @@ $acara = $crud->getAcaraLimitOrdered(0, 4, "DESC");
                                         <path d="M11 6.5a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1zm-3 0a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1zm-5 3a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1zm3 0a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1z" />
                                         <path d="M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h1a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h1V.5a.5.5 0 0 1 .5-.5zM1 4v10a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V4H1z" />
                                     </svg>
-                                    <small class="text-muted offset-1"><?= $r['tanggal_acara']; ?></small>
+                                    <small class="text-muted offset-1"><?= tgl_indo($r['tanggal_acara']); ?></small>
                                 </div>
                                 <div class="d-flex flex-row align-items-center">
                                     <!-- Icon Lokasi dan lokasi acara -->

@@ -155,7 +155,7 @@ $fetch_jenis_acara = $pdo->query("SELECT * FROM jenis_acara");
                                             <div class="row">
                                                 <label class="col-sm-4 col-form-label">Batas Registrasi : </label>
                                                 <div class="col-sm-8">
-                                                    <input type="text" class="form-control" value="<?= $detailAcara['tanggal_batas_registrasi']; ?>" name="tanggal_batas_registrasi" required>
+                                                    <input type="date" class="form-control" value="<?= $detailAcara['tanggal_batas_registrasi']; ?>" name="tanggal_batas_registrasi" required>
                                                 </div>
                                             </div>
                                         </li>
@@ -163,7 +163,7 @@ $fetch_jenis_acara = $pdo->query("SELECT * FROM jenis_acara");
                                             <div class="row">
                                                 <label class="col-sm-4 col-form-label">Tanggal Acara : </label>
                                                 <div class="col-sm-8">
-                                                    <input type="text" class="form-control" value="<?= $detailAcara['tanggal_acara']; ?>" name="tanggal_acara" required>
+                                                    <input type="date" class="form-control" value="<?= $detailAcara['tanggal_acara']; ?>" name="tanggal_acara" required>
                                                 </div>
                                             </div>
                                         </li>
@@ -215,7 +215,14 @@ $fetch_jenis_acara = $pdo->query("SELECT * FROM jenis_acara");
                                             <tr>
                                                 <th scope="row" class="text-center"><?= $i; ?></th>
                                                 <td><?= $r["nama"]; ?></td>
-                                                <td><?= $r["tanggal_lahir"]; ?></td>
+                                                <td>
+                                                    <?php 
+                                                        $lahir =new DateTime($r['tanggal_lahir']);
+                                                        $today =new DateTime();
+                                                        $umur = $today->diff($lahir); 
+                                                        echo "$umur->y Tahun"
+                                                    ?>
+                                                </td>
                                                 <td><?= $r["jenis_kelamin"]; ?></td>
                                                 <td><?= $r["alamat"]; ?></td>
                                                 <td><?= $r["nomor_telepon"]; ?></td>
