@@ -31,11 +31,11 @@ class crud
         }
     }
 
-    public function insertAcara($judul_acara, $deskripsi_acara, $jumlah_kebutuhan, $tanggal_batas_registrasi, $tanggal_acara, $lokasi, $id_jenis_acara, $id_organisasi)
+    public function insertAcara($judul_acara, $deskripsi_acara, $jumlah_kebutuhan, $tanggal_batas_registrasi, $tanggal_acara, $lokasi, $id_jenis_acara, $id_organisasi, $namaCover)
     {
         try {
             // define sql statement to be executed
-            $sql = "INSERT INTO acara(judul_acara,deskripsi_acara, jumlah_kebutuhan, tanggal_batas_registrasi, tanggal_acara, lokasi, id_jenis_acara, id_organisasi) VALUES (:judul_acara, :deskripsi_acara, :jumlah_kebutuhan, :tanggal_batas_registrasi, :tanggal_acara, :lokasi, :id_jenis_acara, :id_organisasi);";
+            $sql = "INSERT INTO acara(judul_acara,deskripsi_acara, jumlah_kebutuhan, tanggal_batas_registrasi, tanggal_acara, lokasi, cover, id_jenis_acara, id_organisasi) VALUES (:judul_acara, :deskripsi_acara, :jumlah_kebutuhan, :tanggal_batas_registrasi, :tanggal_acara, :lokasi, :cover, :id_jenis_acara, :id_organisasi);";
             //prepare the sql statement for execution
             $stmt = $this->db->prepare($sql);
             // bind all placeholders to the actual values
@@ -45,6 +45,7 @@ class crud
             $stmt->bindparam(':tanggal_batas_registrasi', $tanggal_batas_registrasi);
             $stmt->bindparam(':tanggal_acara', $tanggal_acara);
             $stmt->bindparam(':lokasi', $lokasi);
+            $stmt->bindparam(':cover', $namaCover);
             $stmt->bindparam(':id_jenis_acara', $id_jenis_acara);
             $stmt->bindparam(':id_organisasi', $id_organisasi);
 
@@ -103,7 +104,7 @@ class crud
     public function getAcaraLimit($awalData, $menampilkanDataPerHalaman)
     {
         try {
-            $sql = "SELECT * FROM acara LEFT JOIN organisasi USING(id_organisasi) LEFT JOIN jenis_acara USING(id_jenis_acara) LIMIT $awalData, $menampilkanDataPerHalaman";
+            $sql = "SELECT * FROM acara LEFT JOIN organisasi USING(id_organisasi) LEFT JOIN jenis_acara USING(id_jenis_acara) ORDER BY acara.id_acara DESC LIMIT $awalData, $menampilkanDataPerHalaman";
             $result = $this->db->query($sql);
             return $result;
         } catch (PDOException $e) {
@@ -176,7 +177,8 @@ class crud
             a.lokasi LIKE '%$lokasi%' AND
             o.nama LIKE '%$nama%' AND
             j.nama_jenis_acara LIKE '%$nama_jenis_acara%'
-                LIMIT $awalData, $menampilkanDataPerHalaman";
+            ORDER BY id_acara DESC
+            LIMIT $awalData, $menampilkanDataPerHalaman";
             $result = $this->db->query($sql);
             return $result;
         } catch (PDOException $e) {
@@ -269,11 +271,11 @@ class crud
         }
     }
 
-    public function updateAcara($id_acara, $judul_acara, $deskripsi_acara, $jumlah_kebutuhan, $tanggal_batas_registrasi, $tanggal_acara, $lokasi, $id_jenis_acara)
+    public function updateAcara($id_acara, $judul_acara, $deskripsi_acara, $jumlah_kebutuhan, $tanggal_batas_registrasi, $tanggal_acara, $lokasi, $id_jenis_acara, $namaCover)
     {
         try {
             $sql = "UPDATE `acara` SET `judul_acara`= :judul_acara, `deskripsi_acara`= :deskripsi_acara, `jumlah_kebutuhan`= :jumlah_kebutuhan, 
-            `tanggal_batas_registrasi`= :tanggal_batas_registrasi, `tanggal_acara`= :tanggal_acara, `lokasi`= :lokasi, `id_jenis_acara`= :id_jenis_acara WHERE id_acara = :id_acara";
+            `tanggal_batas_registrasi`= :tanggal_batas_registrasi, `tanggal_acara`= :tanggal_acara, `lokasi`= :lokasi, `cover`= :cover, `id_jenis_acara`= :id_jenis_acara WHERE id_acara = :id_acara";
             $stmt = $this->db->prepare($sql);
             $stmt->bindparam(':id_acara', $id_acara);
             $stmt->bindparam(':judul_acara', $judul_acara);
@@ -282,6 +284,7 @@ class crud
             $stmt->bindparam(':tanggal_batas_registrasi', $tanggal_batas_registrasi);
             $stmt->bindparam(':tanggal_acara', $tanggal_acara);
             $stmt->bindparam(':lokasi', $lokasi);
+            $stmt->bindparam(':cover', $namaCover);
             $stmt->bindparam(':id_jenis_acara', $id_jenis_acara);
 
             $stmt->execute();
@@ -355,6 +358,7 @@ class crud
 
     public function deleteAcara($id)
     {
+
         try {
             $sql = "CALL deleteAcara(:id)";
             // 

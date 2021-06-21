@@ -118,9 +118,9 @@ $fetch_jenis_acara = $pdo->query("SELECT * FROM jenis_acara");
                             <h6 class="m-0 py-2 font-weight-bold text-primary">Rincian Acara </h6>
                         </div>
                         <div class="card-body py-1">
-                            <form class="row" action="../functions/edit-acara.php" method="POST">
+                            <form class="row" action="../functions/edit-acara.php" method="POST" enctype="multipart/form-data">
                                 <input type="hidden" name="id_acara" value="<?= $detailAcara['id_acara']; ?>">
-                                <div class="col-lg-6">
+                                <div class="col-lg-7 border-bottom pb-2">
                                     <ul class="list-group list-group-flush">
                                         <li class="list-group-item">
                                             <div class="row">
@@ -155,7 +155,7 @@ $fetch_jenis_acara = $pdo->query("SELECT * FROM jenis_acara");
                                             <div class="row">
                                                 <label class="col-sm-4 col-form-label">Batas Registrasi : </label>
                                                 <div class="col-sm-8">
-                                                    <input type="text" class="form-control" value="<?= $detailAcara['tanggal_batas_registrasi']; ?>" name="tanggal_batas_registrasi" required>
+                                                    <input type="date" class="form-control" value="<?= $detailAcara['tanggal_batas_registrasi']; ?>" name="tanggal_batas_registrasi" required>
                                                 </div>
                                             </div>
                                         </li>
@@ -163,7 +163,7 @@ $fetch_jenis_acara = $pdo->query("SELECT * FROM jenis_acara");
                                             <div class="row">
                                                 <label class="col-sm-4 col-form-label">Tanggal Acara : </label>
                                                 <div class="col-sm-8">
-                                                    <input type="text" class="form-control" value="<?= $detailAcara['tanggal_acara']; ?>" name="tanggal_acara" required>
+                                                    <input type="date" class="form-control" value="<?= $detailAcara['tanggal_acara']; ?>" name="tanggal_acara" required>
                                                 </div>
                                             </div>
                                         </li>
@@ -175,15 +175,30 @@ $fetch_jenis_acara = $pdo->query("SELECT * FROM jenis_acara");
                                                 </div>
                                             </div>
                                         </li>
+                                        <li class="list-group-item">
+                                            <div class="row">
+                                                <label class="col-sm-4 col-form-label">Deskripsi : </label>
+                                                <div class="col-sm-8">
+                                                    <textarea name="deskripsi_acara" class="form-control" required><?= $detailAcara['deskripsi_acara']; ?></textarea>
+                                                </div>
+                                            </div>
+                                        </li>
                                     </ul>
                                 </div>
-                                <div class="col-lg-6">
-                                    <ul class="list-group list-group-flush">
-                                        <li class="list-group-item">Deskripsi : <br /> <textarea name="deskripsi_acara" class="form-control" style="min-height:280px;max-height: 280px;" required><?= $detailAcara['deskripsi_acara']; ?></textarea></li>
-                                    </ul>
-                                    <div style="padding:6px 20px" class="d-flex justify-content-end">
-                                        <button class="btn btn-sm btn-primary" style="width: 150px;" type="submit" name="submit"><i class="fa fa-save"></i> Ubah</button>
+                                <div class="col-lg-5 border-bottom">
+                                    <h6 class="mt-3">Cover Acara</h6>
+                                    <img class="img-fluid" src="../assets/images/<?= $detailAcara['cover'] == '' ? 'default.jpg' : 'cover/' . $detailAcara['cover']; ?>" style="max-height: 300px;object-fit:cover;width:100%;" alt="" id="preview-image">
+                                    <input type="hidden" value="<?= $detailAcara['cover'] == '' ? '' :  $detailAcara['cover']; ?>" name="cover_lama">
+                                    <div class="form-group mt-2">
+                                        <div class="custom-file">
+                                            <input type="file" class="custom-file-input" id="coverAcara" name="cover-acara" onchange="previewImg()">
+                                            <label class="custom-file-label" for="coverAcara" id="labelInputCoverAcara"><?= $detailAcara['cover'] == '' ? 'Choose File' : $detailAcara['cover']; ?></label>
+                                        </div>
+                                        <small class="text-muted font-weight-italic">Ukuran gambar maksimal 1MB. Ekstensi file yang diperbolehkan : jpg, jpeg, png</small>
                                     </div>
+                                </div>
+                                <div class="col-lg-5 ml-auto py-3">
+                                    <button class="btn btn-sm btn-primary w-100" type="submit" name="submit"><i class="fa fa-save"></i> Ubah</button>
                                 </div>
                             </form>
                         </div>
@@ -215,9 +230,9 @@ $fetch_jenis_acara = $pdo->query("SELECT * FROM jenis_acara");
                                             <tr>
                                                 <th scope="row" class="text-center"><?= $i; ?></th>
                                                 <td><?= $r["nama"]; ?></td>
-                                                <td><?= $r["tanggal_lahir"]; ?></td>
+                                                <td><?= floor(date_diff(date_create($r["tanggal_lahir"]), date_create('now'))->format("%a") / 365); ?> Tahun</td>
                                                 <td><?= $r["jenis_kelamin"]; ?></td>
-                                                <td><?= $r["alamat"]; ?></td>
+                                                <td style="max-width: 250px;"><?= $r["alamat"]; ?></td>
                                                 <td><?= $r["nomor_telepon"]; ?></td>
                                                 <!-- kalau status menunggu secondary,  lolos success, gagal danger -->
                                                 <td>
@@ -294,7 +309,23 @@ $fetch_jenis_acara = $pdo->query("SELECT * FROM jenis_acara");
     <!-- Page level plugins -->
     <script src="../assets/vendor/datatables/jquery.dataTables.min.js"></script>
     <script src="../assets/vendor/datatables/dataTables.bootstrap4.min.js"></script>
+    <script>
+        let previewImg = () => {
+            const fileInput = document.querySelector("#coverAcara");
+            const customLabel = document.querySelector("#labelInputCoverAcara");
+            const imgPreview = document.querySelector("#preview-image");
 
+            customLabel.innerText = fileInput.files[0].name;
+
+            const fileCover = new FileReader();
+            fileCover.readAsDataURL(fileInput.files[0]);
+
+            fileCover.onload = (e) => {
+                imgPreview.src = e.target.result;
+            }
+
+        };
+    </script>
 
 </body>
 

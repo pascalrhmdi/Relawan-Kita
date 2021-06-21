@@ -67,9 +67,11 @@
                         <?= $_SESSION['nama']; ?>
                     </a>
                     <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="navbarDarkDropdownMenuLink">
-                        <?php if ($_SESSION['role'] != 'admin') : ?>
-                            <li><a class="dropdown-item" href="<?php if ($_SESSION['role'] == 'volunteer') echo 'EditProfil-Relawan.php';
-                                                                else echo './organisasi/editprofil.php';  ?>">Setting Akun</a></li>
+                        <?php if ($_SESSION['role'] == 'organisasi') : ?>
+                            <li><a class="dropdown-item" href="./organisasi/editprofil.php">Setting Akun</a></li>
+                        <?php elseif ($_SESSION['role'] == 'volunteer') : ?>
+                            <li><a class="dropdown-item" href="EditProfil-Relawan.php">Setting Akun</a></li>
+                            <li><a class="dropdown-item" href="riwayat-pendaftaran.php">History Pendaftaran</a></li>
                         <?php endif ?>
                         <li><a class="dropdown-item" href="logout.php">Log Out</a></li>
                     </ul>

@@ -58,10 +58,51 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $lokasi = $_POST['lokasi'];
     $id_jenis_acara = $_POST['id_jenis_acara'];
 
-    $queryResult = $crud->insertAcara($judul_acara, $deskripsi_acara, $jumlah_kebutuhan, $tanggal_batas_registrasi, $tanggal_acara, $lokasi, $id_jenis_acara, $id_organisasi);
+    $namaFile = $_FILES['cover-acara']['name'];
+    $ukuranFile = $_FILES['cover-acara']['size'];
+    $error = $_FILES['cover-acara']['error'];
+    $tmp = $_FILES['cover-acara']['tmp_name'];
+
+    //cek apakah user sudah mengupload file belum
+    if ($error === 4) {
+        echo "<script>
+            alert('silahkan upload file cover terlebih dahulu');
+        </script>";
+        return false;
+    }
+
+    //cek apakah file yang diupload sesuai
+    $ekstensiGambarValid = ['jpg', 'jpeg', 'png'];
+    $ekstensiFileUploaded = strtolower(pathinfo($namaFile, PATHINFO_EXTENSION));
+
+    if (!in_array($ekstensiFileUploaded, $ekstensiGambarValid)) {
+        echo "<script>
+            alert('Yang anda upload bukan gambar');
+        </script>";
+        return false;
+    }
+
+
+    //cek apakah ukuran file yang diupload sesuai
+    if ($ukuranFile > 1000000) {
+        echo "<script>
+            alert('ukuran gambar terlalu besar');
+        </script>";
+        return false;
+    }
+
+    //generate nama baru 
+    $namaFileBaru = uniqid();
+    $namaFileBaru .= '.';
+    $namaFileBaru .= $ekstensiFileUploaded;
+
+    $namaCover = $namaFileBaru;
+
+    $queryResult = $crud->insertAcara($judul_acara, $deskripsi_acara, $jumlah_kebutuhan, $tanggal_batas_registrasi, $tanggal_acara, $lokasi, $id_jenis_acara, $id_organisasi, $namaCover);
     if (!$queryResult) {
         header("Location:listacara.php?tambahacara=failed");
     } else {
+        move_uploaded_file($tmp, '../assets/images/cover/' . $namaFileBaru);
         header("Location:listacara.php?tambahacara=successfull");
     }
 }
@@ -237,7 +278,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     <?php if ($_SESSION['role'] == 'organisasi') : ?>
         <!-- tambah acara modal -->
         <div class="modal fade" id="tambahAcaraModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-            <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-dialog modal-xl" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
                         <h5 class="modal-title" id="exampleModalLabel">Tambah Acara</h5>
@@ -245,40 +286,54 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                             <span aria-hidden="true">×</span>
                         </button>
                     </div>
-                    <form action="<?php echo htmlentities($_SERVER['PHP_SELF']); ?>" method="post">
-                        <div class="modal-body">
-                            <div class="form-group">
-                                <label>Nama</label>
-                                <input type="text" class="form-control" placeholder="Masukan Nama Acara" name="judul_acara" required>
+                    <form action="<?php echo htmlentities($_SERVER['PHP_SELF']); ?>" method="post" enctype="multipart/form-data">
+                        <div class="modal-body row">
+                            <div class="col-lg-8 row">
+                                <div class="form-group col-12">
+                                    <label>Nama</label>
+                                    <input type="text" class="form-control" placeholder="Masukan Nama Acara" name="judul_acara" required>
+                                </div>
+                                <div class="form-group col-12">
+                                    <label>Deskripsi Acara</label>
+                                    <textarea type="text" class="form-control" placeholder="Masukan Deskripsi Acara" name="deskripsi_acara" required></textarea>
+                                </div>
+                                <div class="form-group col-12">
+                                    <label>Cover Acara</label>
+                                    <div class="custom-file">
+                                        <input type="file" class="custom-file-input" id="coverAcara" name="cover-acara" onchange="previewImg()" required>
+                                        <label class="custom-file-label" for="coverAcara" id="labelInputCoverAcara">Choose file</label>
+                                    </div>
+                                    <small class="text-muted font-weight-italic">Ukuran gambar maksimal 1MB. Ekstensi file yang diperbolehkan : jpg, jpeg, png</small>
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <label for="exampleFormControlSelect1">Kategori Acara</label>
+                                    <select class="form-control" name="id_jenis_acara" required>
+                                        <option value="" hidden>-- Pilih Kategori --</option>
+                                        <?php while ($jenis_acara = $fetch_jenis_acara->fetch()) : ?>
+                                            <option class="text-capitalize" value="<?= $jenis_acara['id_jenis_acara'] ?>"><?= $jenis_acara['nama_jenis_acara']; ?></option>
+                                        <?php endwhile ?>
+                                    </select>
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <label>Kuota Relawan</label>
+                                    <input type="number" class="form-control" placeholder="Masukan Batas Kuota Relawan" name="jumlah_kebutuhan" required>
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <label>Tanggal Pelaksanaan Acara</label>
+                                    <input type="date" class="form-control" name="tanggal_acara" required>
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <label>Deadline Pendaftaran Acara</label>
+                                    <input type="date" class="form-control" name="tanggal_batas_registrasi" required>
+                                </div>
+                                <div class="form-group col-12">
+                                    <label>Lokasi Acara</label>
+                                    <input type="text" class="form-control" placeholder="Masukan Lokasi Acara Diselenggarakan" name="lokasi" required>
+                                </div>
                             </div>
-                            <div class="form-group">
-                                <label>Deskripsi Acara</label>
-                                <textarea type="text" class="form-control" placeholder="Masukan Deskripsi Acara" name="deskripsi_acara" required></textarea>
-                            </div>
-                            <div class="form-group">
-                                <label for="exampleFormControlSelect1">Kategori Acara</label>
-                                <select class="form-control" name="id_jenis_acara" required>
-                                    <option value="" hidden>-- Pilih Kategori --</option>
-                                    <?php while ($jenis_acara = $fetch_jenis_acara->fetch()) : ?>
-                                        <option class="text-capitalize" value="<?= $jenis_acara['id_jenis_acara'] ?>"><?= $jenis_acara['nama_jenis_acara']; ?></option>
-                                    <?php endwhile ?>
-                                </select>
-                            </div>
-                            <div class="form-group">
-                                <label>Kuota Relawan</label>
-                                <input type="number" class="form-control" placeholder="Masukan Batas Kuota Relawan" name="jumlah_kebutuhan" required>
-                            </div>
-                            <div class="form-group">
-                                <label>Tanggal Pelaksanaan Acara</label>
-                                <input type="date" class="form-control" name="tanggal_acara" required>
-                            </div>
-                            <div class="form-group">
-                                <label>Lokasi Acara</label>
-                                <input type="text" class="form-control" placeholder="Masukan Lokasi Acara Diselenggarakan" name="lokasi" required>
-                            </div>
-                            <div class="form-group">
-                                <label>Deadline Pendaftaran Acara</label>
-                                <input type="date" class="form-control" name="tanggal_batas_registrasi" required>
+                            <div class="col-lg-4">
+                                <h6>Cover Acara</h6>
+                                <img class="img-fluid" src="../assets/images/default.jpg" id="preview-image" alt="">
                             </div>
                         </div>
                         <div class="modal-footer">
@@ -303,8 +358,23 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     <!-- Page level plugins -->
     <script src="../assets/vendor/datatables/jquery.dataTables.min.js"></script>
     <script src="../assets/vendor/datatables/dataTables.bootstrap4.min.js"></script>
+    <script>
+        let previewImg = () => {
+            const fileInput = document.querySelector("#coverAcara");
+            const customLabel = document.querySelector("#labelInputCoverAcara");
+            const imgPreview = document.querySelector("#preview-image");
 
+            customLabel.innerText = fileInput.files[0].name;
 
+            const fileCover = new FileReader();
+            fileCover.readAsDataURL(fileInput.files[0]);
+
+            fileCover.onload = (e) => {
+                imgPreview.src = e.target.result;
+            }
+
+        };
+    </script>
 </body>
 
 </html>

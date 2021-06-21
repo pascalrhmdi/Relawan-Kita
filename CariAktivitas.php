@@ -103,7 +103,7 @@ if (isset($_GET['judul_acara'])) {
             <div class="col-3 mb-3 ">
                 <div class="card shadow-sm" style="height: 100%;">
                     <a href="ViewAktivitas.php?id_acara=<?= $r['id_acara'] ?>" rel="noopener noreferrer" class="no-effect-link">
-                        <img src="assets/images/image_2021-05-03_14-46-10.png" class="card-img-top " alt="Foto Organisasi">
+                        <img src="assets/images/<?= $r['cover'] == '' ? 'default.jpg' : 'cover/' . $r['cover']; ?>" class="card-img-top" style="max-height: 200px;object-fit: cover;" alt="Foto Organisasi">
                         <div class="card-body ">
                             <!-- Nama Acara dan Nama Organisasi -->
                             <span class="text-uppercase p-1 rounded-pill" style="border: 1px solid #DF202E; color:#DF202E; font-size: 8px"><?= $r['nama_jenis_acara']; ?></span>
