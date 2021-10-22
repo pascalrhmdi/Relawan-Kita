@@ -4,16 +4,22 @@ require_once '../db/connect.php';
 
 // check akun
 if (isset($_SESSION['role'])) {
-    if ($_SESSION['role'] == 'volunteer') header("Location:CariAktivitas.php");
-    elseif ($_SESSION['role'] == 'organisasi') $id_organisasi = $_SESSION['id_organisasi'];
-    else header("Location:listacara.php");
+    if ($_SESSION['role'] != 'organisasi') {
+        header("Location:../CariAktivitas.php");
+    }
 } else {
     header("Location: ../login.php");
 };
 
-if (isset($_GET['id'])) {
+if (isset($_GET['id']) && trim($_GET['id']) !== "") {
     $id_acara = $_GET['id'];
+} else {
+    header("Location:listacara.php");
+    die;
 }
+
+$id_pengguna = $_SESSION['id_pengguna'];
+
 
 $query = $pdo->query("SELECT COUNT(id_pengguna) as id FROM status WHERE id_acara = $id_acara");
 $row = $query->fetch();
@@ -23,16 +29,27 @@ $total = $row['id'];
 $menampilkanDataPerHalaman = $total;
 $awalData = 0;
 
-// semua data diambil
-$results = $pdo->query("SELECT * FROM status s
-                        LEFT JOIN pengguna p
+// semua data pendaftaran relawan diambil
+$results = $pdo->query("SELECT status.status,pengguna.nama,pengguna.alamat,pengguna.nomor_telepon,pengguna.id_pengguna,
+                        relawan.jenis_kelamin,relawan.tanggal_lahir
+                        FROM status
+                        JOIN pengguna
                             USING(id_pengguna)
-                        WHERE id_acara = $id_acara
+                        JOIN relawan
+                            USING(id_pengguna)
+                        JOIN acara
+                            USING(id_acara)
+                        WHERE acara.id_acara = $id_acara AND acara.id_pengguna = $id_pengguna
                         LIMIT $awalData, $menampilkanDataPerHalaman");
 
-$detailAcara = $pdo->query("SELECT acara.*,jenis_acara.nama_jenis_acara as kategori FROM acara JOIN jenis_acara USING(id_jenis_acara) WHERE acara.id_acara = $id_acara");
+$detailAcara = $crud->getDetailAcaraByIdAcaraDanIdPemilik($id_acara, $id_pengguna);
 $detailAcara = $detailAcara->fetch();
 
+// ketika organisasi mencoba akses acara yang bukan miliknya
+if (!$detailAcara) {
+    header('location:./listacara.php');
+    die;
+}
 
 // untuk update rincian acara
 $fetch_jenis_acara = $pdo->query("SELECT * FROM jenis_acara");
@@ -211,7 +228,7 @@ $fetch_jenis_acara = $pdo->query("SELECT * FROM jenis_acara");
                     <!-- DataTales Example -->
                     <div class="card shadow mb-4">
                         <div class="card-header">
-                            <h6 class="m-0 py-1 font-weight-bold text-primary">List Pendaftar</h6>
+                            <h6 class="m-0 py-1 font-weight-bold text-primary">List Pendaftar Relawan</h6>
                         </div>
                         <div class="card-body">
                             <div class="table-responsive">

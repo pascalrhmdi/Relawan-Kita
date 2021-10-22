@@ -1,6 +1,7 @@
 <?php
 
 // Fungsi ini dipakai oleh Admin dan Organisasi (EditProfil-Organisasi.php)
+require_once '../includes/session.php';
 require_once '../db/connect.php';
 
 //If data was submitted via a form POST request, then...
@@ -51,8 +52,9 @@ if (isset($_POST['submit'])) {
         $namaCover = $namaFileBaru;
     }
 
+    $id_pengguna = $_SESSION['id_pengguna'];
 
-    $queryResult = $crud->updateAcara($id_acara, $judul_acara, $deskripsi_acara, $jumlah_kebutuhan, $tanggal_batas_registrasi, $tanggal_acara, $lokasi, $id_jenis_acara, $namaCover);
+    $queryResult = $crud->updateAcara($id_acara, $judul_acara, $deskripsi_acara, $jumlah_kebutuhan, $tanggal_batas_registrasi, $tanggal_acara, $lokasi, $id_jenis_acara, $namaCover,$id_pengguna);
 
     if (!$queryResult) {
         header("Location:../organisasi/detailacara.php?id=$id_acara&successeditacara=failed");

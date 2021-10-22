@@ -11,14 +11,7 @@ if (isset($_GET['login'])) {
     include_once './includes/successmessage.php';
 }
 
-if (isset($_GET['EditProfilUser'])) {
-    $nama = $_SESSION['nama'];
-    $message = "Selamat $nama, Anda Berhasil Update User";
-    include_once './includes/successmessage.php';
-}
-
 // untuk ambil jumlah row apakah lebih dari 0
-
 
 // apakah filter sudah di klik?
 if (isset($_GET['judul_acara'])) {
@@ -30,14 +23,14 @@ if (isset($_GET['judul_acara'])) {
 
     // Ambil data yang di filter
     $query = $pdo->query("SELECT COUNT(id_acara) as id FROM acara a
-                                LEFT JOIN organisasi o
-                                    USING (id_organisasi) 
-                                LEFT JOIN jenis_acara j
+                                JOIN pengguna p
+                                    USING (id_pengguna) 
+                                JOIN jenis_acara j
                                     USING(id_jenis_acara) 
                                 WHERE 
                                 a.judul_acara LIKE '%$judul_acara%' AND
                                 a.lokasi LIKE '%$lokasi%' AND
-                                o.nama LIKE '%$organisasi%' AND
+                                p.nama LIKE '%$organisasi%' AND
                                 j.nama_jenis_acara LIKE '%$nama_jenis_acara%'");
     $row = $query->fetch();
     // total row

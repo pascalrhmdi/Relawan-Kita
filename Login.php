@@ -3,34 +3,33 @@ $title = 'Masuk';
 
 require_once 'includes/header.php';
 require_once 'db/connect.php';
-// require_once 'includes/auth_check.php'; 
+require_once './includes/auth_check.php'; 
 
 //If data was submitted via a form POST request, then...
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $email = $_POST['email'];
     $password = $_POST['password'];
     $new_password = md5($password . $email);
-    $login = $_POST['login'];
-    echo $password . $email;
 
-    // login relawan?
-    $login == 'volunteer'
-        ? $result = $user->getUser($email, $new_password)
-        : $result = $crud->getAccountOrganisasi($email, $new_password);
+    $result = $user->getUser($email, $new_password);
+
     if (!$result) {
         $message = 'Username or Password is incorrect! Please try again.';
         include_once './includes/errormessage.php';
     } else {
-        $login == 'volunteer'
-            ? $_SESSION['id_pengguna'] = $result['id_pengguna']
-            : $_SESSION['id_organisasi'] = $result['id_organisasi'];
-
+        $_SESSION['id_pengguna'] = $result['id_pengguna'];
         $_SESSION['nama'] = $result['nama'];
         $_SESSION['role'] = $result['role'];
-        if ($_SESSION['role'] == 'admin') header("Location: Admin-User.php?login=success");
-        else if ($_SESSION['role'] == 'organisasi') header("Location: ./organisasi/listacara.php?login=success");
-        else header("Location: CariAktivitas.php?login=success");
-        include_once 'includes/successmessage.php';
+
+        if ($_SESSION['role'] == 'admin') {
+            header("Location: ./admin/relawan.php?login=success");
+        } else if ($_SESSION['role'] == 'organisasi') {
+            header("Location: ./organisasi/listacara.php?login=success");
+        } else {
+            header("Location: CariAktivitas.php?login=success");
+        };
+
+        die;
     }
 }
 ?>
@@ -42,19 +41,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         <h1 class="text-center mb-4"><?php echo $title ?> </h1>
 
         <form action="<?php echo htmlentities($_SERVER['PHP_SELF']); ?>" method="post">
-            <div class="p-2 m-1 mb-3 border">
-                <h6 class="mb-1">Sebagai</h6>
-                <div class="d-flex justify-content-evenly">
-                    <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" name="login" id="volunteer" value="volunteer" checked>
-                        <label class="form-check-label text-capitalize" for="volunteer">Relawan</label>
-                    </div>
-                    <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" name="login" id="organisasi" value="organisasi">
-                        <label class="form-check-label" for="organisasi">Organisasi</label>
-                    </div>
-                </div>
-            </div>
             <!-- Email -->
             <div class="input-group mb-4">
                 <label class="input-group-text" id="basic-addon1" for="email">

@@ -6,58 +6,15 @@
         </button>
         <div class="collapse navbar-collapse pt-sm-2 pt-md-0 justify-content-between" id="sticky-nav">
             <ul class="navbar-nav">
-                <!-- sudah masuk ? -->
-                <?php if (isset($_SESSION['role'])) : ?>
-                    <!-- jadi admin ? -->
-                    <?php if ($_SESSION['role'] == 'admin') : ?>
-                        <li class="nav-item">
-                            <a class="nav-link active px-1 mx-1" href="admin-User.php">Manajemen User</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link active px-1 mx-1" href="Admin-Organisasi.php">Manajemen Organisasi</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link active px-1 mx-1" href="organisasi/listacara.php">Manajemen Acara</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link active px-1 mx-1" href="admin-JenisAcara.php">Manajemen Jenis Acara</a>
-                        </li>
-                    <?php elseif ($_SESSION['role'] == 'organisasi') : ?>
-                        <li class="nav-item">
-                            <a class="nav-link active px-1 mx-1" href="organisasi/listacara.php">Manajemen Acara</a>
-                        </li>
-                        <li class="nav-item ">
-                            <a class="nav-link active px-1 mx-1" href="CariAktivitas.php">Cari Aktivitas</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link active px-1 mx-1" href="TentangKami.php">Tentang Kami</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link active px-1 mx-1" href="index.php">Home</a>
-                        </li>
-                    <?php else : ?>
-                        <li class="nav-item ">
-                            <a class="nav-link active px-1 mx-1" href="CariAktivitas.php">Cari Aktivitas</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link active px-1 mx-1" href="TentangKami.php">Tentang Kami</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link active px-1 mx-1" href="index.php">Home</a>
-                        </li>
-                    <?php endif ?>
-                    <!-- Kalo belum login dan selain admin -->
-                <?php else : ?>
-                    <li class="nav-item ">
-                        <a class="nav-link active px-1 mx-1" href="CariAktivitas.php">Cari Aktivitas</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link active px-1 mx-1" href="TentangKami.php">Tentang Kami</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link active px-1 mx-1" href="index.php">Home</a>
-                    </li>
-                <?php endif ?>
+                <li class="nav-item ">
+                    <a class="nav-link active px-1 mx-1" href="CariAktivitas.php">Cari Aktivitas</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link active px-1 mx-1" href="TentangKami.php">Tentang Kami</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link active px-1 mx-1" href="index.php">Home</a>
+                </li>
                 <!-- Sudah login? -->
                 <?php if (isset($_SESSION['nama'])) : ?>
             </ul>
@@ -69,7 +26,9 @@
                     <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="navbarDarkDropdownMenuLink">
                         <?php if ($_SESSION['role'] == 'organisasi') : ?>
                             <li><a class="dropdown-item" href="./organisasi/editprofil.php">Setting Akun</a></li>
-                        <?php elseif ($_SESSION['role'] == 'volunteer') : ?>
+                        <?php elseif ($_SESSION['role'] == 'admin') : ?>
+                            <li><a class="dropdown-item" href="./admin/relawan.php">Dashboard</a></li>
+                        <?php else: ?>
                             <li><a class="dropdown-item" href="EditProfil-Relawan.php">Setting Akun</a></li>
                             <li><a class="dropdown-item" href="riwayat-pendaftaran.php">History Pendaftaran</a></li>
                         <?php endif ?>

@@ -4,7 +4,7 @@ require_once './db/connect.php';
 require_once './functions/convert-date.php';
 
 $jmlRelawan = $pdo->query("SELECT COUNT(id_pengguna) as id FROM status WHERE status <> 'gagal'");
-$jmlOrganisasi = $pdo->query("SELECT COUNT(id_organisasi) as id  FROM organisasi");
+$jmlOrganisasi = $pdo->query("SELECT COUNT(id_pengguna) as id  FROM organisasi");
 $jmlAcara = $pdo->query("SELECT COUNT(id_acara) as id FROM acara");
 
 $acara = $crud->getAcaraLimitOrdered(0, 4, "DESC");

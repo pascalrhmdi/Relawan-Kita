@@ -1,23 +1,26 @@
 <?php
-include_once '../includes/session.php';
+require_once '../includes/session.php';
 require_once '../db/connect.php';
 
 // check akun
 if (isset($_SESSION['role'])) {
-    if ($_SESSION['role'] != 'organisasi') {
-        header("Location:../CariAktivitas.php");die;
+    if ($_SESSION['role'] != 'admin') {
+        header("Location:../CariAktivitas.php");
     }
 } else {
-    header("Location: ../login.php");die;
+    header("Location: ../login.php");
 };
-// Fetch Data Organisasi
 
-$id_pengguna = $_SESSION['id_pengguna'];
+if (isset($_GET['id'])) {
+    $id_jenis_acara = $_GET['id'];
 
-$result = $crud->getAccountOrganisasi($id_pengguna);
-
-
+    // Fetch Data user
+    $result = $pdo->query("SELECT * FROM jenis_acara WHERE id_jenis_acara = $id_jenis_acara")->fetch();
+} else {
+    header("Location: ./jenis-acara.php");
+}
 ?>
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -33,7 +36,7 @@ $result = $crud->getAccountOrganisasi($id_pengguna);
     <link rel="icon" type="favicon" sizes="16x16" href="../assets/favicon/favicon-16x16.ico" />
     <link rel="icon" type="favicon" sizes="48x48" href="../assets/favicon/favicon-48-48.ico" />
 
-    <title>Edit Profil Organisasi | Relawan Kita</title>
+    <title>Edit Jenis Acara | Relawan Kita</title>
 
     <!-- Custom fonts for this template -->
     <link href="../assets/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
@@ -42,8 +45,6 @@ $result = $crud->getAccountOrganisasi($id_pengguna);
     <!-- Custom styles for this template -->
     <link href="../assets/css/sb-admin-2.min.css" rel="stylesheet">
 
-    <!-- Custom styles for this page -->
-    <link href="../assets/vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
 
 </head>
 
@@ -53,7 +54,7 @@ $result = $crud->getAccountOrganisasi($id_pengguna);
     <div id="wrapper">
 
         <!-- Sidebar -->
-        <?php include("../includes/admin/sidebar.php"); ?>
+        <?php include_once("../includes/admin/sidebar.php"); ?>
         <!-- End of Sidebar -->
 
         <!-- Content Wrapper -->
@@ -63,54 +64,43 @@ $result = $crud->getAccountOrganisasi($id_pengguna);
             <div id="content">
 
                 <!-- Topbar -->
-                <?php include("../includes/admin/topbar.php"); ?>
+                <?php include_once("../includes/admin/topbar.php"); ?>
                 <!-- End of Topbar -->
 
                 <!-- Begin Page Content -->
                 <div class="container-fluid">
-
-                    <?php if (isset($_GET['successedit'])) {
-                        if ($_GET['successedit'] == 'failed') {
-                            $message = 'Gagal untuk merubah profil organisasi, Cek kembali form anda';
-                            include_once '../includes/errormessage.php';
-                        } else {
-                            $message = 'Berhasil merubah profil organisasi';
-                            include_once '../includes/successmessage.php';
-                        }
-                    } ?>
-
                     <!-- Page Heading -->
-                    <h1 class="h3 mb-2 text-gray-800">Ubah Profile</h1>
+                    <h1 class="h3 mb-2 text-gray-800">Kelola Jenis Acara</h1>
+
+                    <?php
+                    if (isset($_GET['EditJenisAcara'])) {
+                        if ($_GET['EditJenisAcara'] == 'failed') {
+                            $message = 'Gagal untuk merubah profil Jenis Acara, Cek kembali form anda';
+                            include_once '../includes/errormessage.php';
+                        }
+                    }
+
+                    ?>
 
                     <!-- DataTales Example -->
                     <div class="card shadow mb-4">
                         <div class="card-header">
-                            <h6 class="m-0 font-weight-bold text-primary py-2">Detail Profile</h6>
+                            <h6 class="m-0 font-weight-bold text-primary py-2">Detail Jenis Acara</h6>
                         </div>
                         <div class="card-body">
-                            <form action="../functions/edit-organisasi.php" method="post">
-                                <div class="form-group">
-                                    <label>Nama Organisasi</label>
-                                    <input type="text" class="form-control" name="nama" value="<?= $result['nama'] ?>" required>
-                                </div>
-                                <div class="form-group">
-                                    <label>Nomor Telepon</label>
-                                    <input type="number" class="form-control" name="nomor_telepon" value="<?= $result['nomor_telepon'] ?>" required>
-                                </div>
-                                <div class="form-group">
-                                    <label>Alamat</label>
-                                    <textarea style="min-height: 100px;" name="alamat" class="form-control" required><?= $result['alamat'] ?></textarea>
-                                </div>
-                                <div class="form-group">
-                                    <label>Deskripsi</label>
-                                    <textarea style="min-height: 200px;" name="deskripsi_organisasi" class="form-control" required><?= $result['deskripsi_organisasi'] ?></textarea>
-                                </div>
-                                <div class="form-group">
-                                    <label>Tahun Berdiri</label>
-                                    <input type="number" class="form-control" value="<?= $result['tahun_berdiri'] ?>" name="tahun_berdiri" required>
-                                </div>
-                                <div class="d-flex justify-content-end mt-3">
-                                    <button name="submit" type="submit" class="btn btn-sm btn-primary">Simpan</button>
+                            <form action="../functions/edit-jenisacara.php" method="post">
+                                <!-- id Jenis ACara -->
+                                <input type="hidden" name="id_jenis_acara" value="<?= $id_jenis_acara; ?>">
+
+                                <!-- Email -->
+                                <div class="form-group mb-3 row">
+                                    <label for="nama_jenis_acara" class="col-12">Nama Jenis Acara: *</label>
+                                    <div class="col-md-9">
+                                        <input required type="text" class="form-control" id="nama_jenis_acara" name="nama_jenis_acara" value="<?= $result['nama_jenis_acara'] ?>">
+                                    </div>
+                                    <div class="col-md-3">
+                                        <button type="submit" name="submit" class="btn btn-primary btn-block fw-bold">Update Jenis Acara</button>
+                                    </div>
                                 </div>
                             </form>
                         </div>
@@ -165,12 +155,6 @@ $result = $crud->getAccountOrganisasi($id_pengguna);
 
     <!-- Custom scripts for all pages-->
     <script src="../assets/js/sb-admin-2.min.js"></script>
-
-    <!-- Page level plugins -->
-    <script src="../assets/vendor/datatables/jquery.dataTables.min.js"></script>
-    <script src="../assets/vendor/datatables/dataTables.bootstrap4.min.js"></script>
-
-
 </body>
 
 </html>

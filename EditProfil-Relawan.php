@@ -1,46 +1,39 @@
 <?php
 $title = 'Edit Profil';
-include_once './includes/session.php';
 
 require_once './includes/header.php';
 require_once './db/connect.php';
 
 if (isset($_SESSION['role'])) {
-    if ($_SESSION['role'] != 'volunteer') header("Location: ./CariAktivitas.php");
+    if ($_SESSION['role'] != 'volunteer') {
+        header("Location: ./CariAktivitas.php");
+    };
 } else {
     header("Location: ./login.php");
 }
 
 $id_pengguna = $_SESSION['id_pengguna'];
 
-// Fetch Data Organisasi
-$result = $pdo->query("SELECT * FROM pengguna WHERE id_pengguna = $id_pengguna")->fetch();
-
-
-if (isset($_GET['EditUser'])) {
-    if ($_GET['EditUser'] == 'failed') {
-        $message = 'Gagal untuk merubah profil akun, Cek kembali form anda';
-        include_once './includes/errormessage.php';
-    }
-}
+// Fetch Data
+$result = $user->getUserRelawanbyId($id_pengguna);
 ?>
 
 <!-- Main Code -->
 <div class="row justify-content-center ">
     <div class="col-5">
         <h1 class="text-center mb-4"><?= $title ?> </h1>
+        <?php
+        if (isset($_GET['EditProfil'])) {
+            if ($_GET['EditProfil'] == 'failed') {
+                $message = 'Gagal untuk merubah profil akun, Cek kembali form anda';
+                include_once './includes/errormessage.php';
+            } else {
+                $message = 'Berhasil merubah profil akun';
+                include_once './includes/successmessage.php';
+            }
+        }
+        ?>
         <form action="./functions/edit-user.php" method="post">
-            <input type="hidden" name="id_pengguna" value="<?= $id_pengguna; ?>">
-            <input type="hidden" value="volunteer" name="role">
-            <!-- Email -->
-            <!-- <div class="form-group mb-3 d-flex flex-column">
-                <label for="email" class="mb-1">Email address *</label>
-                <input required type="email" class="form-control" id="email" name="email" value = "<?= $result['email'] ?>" >
-            </div>
-            <div class="form-group mb-3 d-flex flex-column">
-                <label for="password" class="mb-1">Password *</label>
-                <input required type="password" class="form-control" id="password" name="password"  value = "<?= $result['password'] ?>" >
-            </div> -->
             <div class="form-group mb-3  d-flex flex-column">
                 <label for="nama" class="mb-1">Nama Lengkap *</label>
                 <input required type="text" class="form-control" id="nama" name="nama" value="<?= $result['nama'] ?>">

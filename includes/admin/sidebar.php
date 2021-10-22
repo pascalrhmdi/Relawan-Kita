@@ -6,30 +6,51 @@
     </a>
 
     <!-- Divider -->
-    <!-- <hr class="sidebar-divider my-0"> -->
-
-    <!-- Nav Item - Dashboard -->
-    <!-- <li class="nav-item ">
-        <a class="nav-link" href="index.html">
-            <i class="fas fa-fw fa-tachometer-alt"></i>
-            <span>Dashboard</span></a>
-    </li> -->
-
-    <!-- Divider -->
     <hr class="sidebar-divider">
 
-    <!-- Heading -->
-    <div class="sidebar-heading">
-        Kelola Acara
-    </div>
+    <?php if ($_SESSION['role'] == 'admin') : ?>
+        <!-- Heading -->
+        <div class="sidebar-heading">
+            Kelola Acara
+        </div>
 
-    <li class="nav-item">
-        <a class="nav-link " href="./listacara.php">
-            <i class="fa fa-list"></i>
-            <span>List Acara</span></a>
-    </li>
+        <li class="nav-item">
+            <a class="nav-link " href="./jenis-acara.php">
+                <i class="fa fa-list"></i>
+                <span>Kelola Jenis Acara</span></a>
+            <a class="nav-link " href="./acara.php">
+                <i class="fa fa-list"></i>
+                <span>List Acara</span></a>
+        </li>
 
-    <?php if ($_SESSION['role'] == 'organisasi') : ?>
+        <!-- Divider -->
+        <hr class="sidebar-divider">
+
+        <div class="sidebar-heading">
+            Kelola User
+        </div>
+
+        <li class="nav-item">
+            <a class="nav-link " href="./relawan.php">
+                <i class="fa fa-list"></i>
+                <span>Manajemen Relawan</span></a>
+            <a class="nav-link " href="./organisasi.php">
+                <i class="fa fa-list"></i>
+                <span>Manajemen Organisasi</span></a>
+        </li>
+
+    <?php else : ?>
+        <!-- Heading -->
+        <div class="sidebar-heading">
+            Kelola Acara
+        </div>
+
+        <li class="nav-item">
+            <a class="nav-link " href="./listacara.php">
+                <i class="fa fa-list"></i>
+                <span>List Acara</span></a>
+        </li>
+
         <!-- Divider -->
         <hr class="sidebar-divider">
 

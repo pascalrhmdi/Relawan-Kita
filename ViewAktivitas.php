@@ -6,13 +6,9 @@ require_once './includes/header.php';
 require_once './functions/convert-date.php';
 
 if (isset($_GET['id_acara'])) {
-    $id = $_GET['id_acara'];
-    $results = $crud->getAcaraById($id);
+    $id_acara = $_GET['id_acara'];
+    $results = $crud->getAcaraById($id_acara);
     $r = $results->fetch(PDO::FETCH_ASSOC);
-    // sudah dapat id_acara-nya ,id_organisasi, dan id_jenis_acara
-    $id_acara = $r['id_acara'];
-    $id_organisasi = $r['id_organisasi'];
-    $id_jenis_acara = $r['id_jenis_acara'];
 
     // pentotalan jumlah yang daftar
     $hasil = $pdo->query("SELECT COUNT(*) as total FROM status WHERE id_acara = $id_acara")->fetch(PDO::FETCH_ASSOC);
@@ -30,9 +26,14 @@ if (isset($_POST['submit'])) {
         // Kalau berhasil berarti belum ada di tabel, masukin
         // kalau gagal, berarti dia udah menjadi calon relawan. kasih error message
         try {
-            $status = $crud->insertStatus($id_pengguna, $id_acara);
-            $message = "Anda berhasil menjadi calon Relawan di acara ini";
-            include_once './includes/successmessage.php';
+            if (date("Y-m-d") <= $r['tanggal_batas_registrasi']) {
+                $status = $crud->insertStatus($id_pengguna, $id_acara);
+                $message = "Anda berhasil menjadi calon Relawan di acara ini";
+                include_once './includes/successmessage.php';
+            } else {
+                $message = "Gagal mendaftar! Melebihi batas tanggal pendaftaran";
+                include_once './includes/errormessage.php';
+            }
         } catch (PDOException $e) {
             $message = "Anda Sudah menjadi calon Relawan di acara ini";
             include_once './includes/errormessage.php';
@@ -98,13 +99,15 @@ if (isset($_POST['submit'])) {
                         <p class="ms-2 mb-0 text-danger">Batas Registrasi <?= tgl_indo($r['tanggal_batas_registrasi']); ?></p>
                     </div>
                     <div class=" mt-4">
-                        <form method="POST" action="" class="d-grid">
-                            <?php if (date("Y-m-d") >  $r['tanggal_batas_registrasi']) : ?>
-                                <button type="submit" name="submit" class="btn text-white p-1 btn-block bg-color-red fw-bold not-allowed" style="box-shadow: 1px 3px 5px -1px rgba(0, 0, 0, 0.8);" disabled>Daftar</button>
-                            <?php else : ?>
+                        <?php if (date("Y-m-d") > $r['tanggal_batas_registrasi']) : ?>
+                            <div class="d-grid">
+                                <button class="btn text-white p-1 btn-block bg-color-red fw-bold not-allowed" style="box-shadow: 1px 3px 5px -1px rgba(0, 0, 0, 0.8);" disabled>Daftar</button>
+                            </div>
+                        <?php else : ?>
+                            <form method="POST" action="" class="d-grid">
                                 <button type="submit" name="submit" class="btn text-white p-1 btn-block bg-color-red fw-bold" style="box-shadow: 1px 3px 5px -1px rgba(0, 0, 0, 0.8);">Daftar</button>
-                            <?php endif ?>
-                        </form>
+                            </form>
+                        <?php endif ?>
                     </div>
                 </div>
             </div>

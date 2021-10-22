@@ -3,27 +3,30 @@ $title = "Daftar Akun Relawan";
 
 require_once './includes/header.php';
 require_once './db/connect.php';
+require_once './includes/auth_check.php';
 
 if (isset($_POST['submit'])) {
     $email = $_POST['email'];
     $password = $_POST['password'];
     $nama = $_POST['nama'];
-    $role = $_POST['role'];
+    $role = 'volunteer';
     $jenis_kelamin = $_POST['jenis_kelamin'];
     $alamat = $_POST['alamat'];
     $nomor_telepon = $_POST['nomor_telepon'];
     $tanggal_lahir = $_POST['tanggal_lahir'];
 
-    $results = $user->insertUser($email, $password, $nama, $role, $jenis_kelamin, $alamat, $nomor_telepon, $tanggal_lahir);
+    $results = $user->insertUser($email, $password, $nama, $role, $alamat, $nomor_telepon);
     if (!$results) {
         echo '<div class="alert alert-danger">Username Sudah digunakan, Silahkan gunakan yang lain.</div>';
     } else {
+        // insert relawan
+        $crud->insertRelawan($pdo->lastInsertId(), $jenis_kelamin, $tanggal_lahir);
+
         $result = $user->getUser($email, md5($password . $email));
         $_SESSION['id_pengguna'] = $result['id_pengguna'];
         $_SESSION['nama'] = $result['nama'];
         $_SESSION['role'] = $result['role'];
-        header("Location: CariAktivitas.php?login=success");
-        include_once 'includes/successmessage.php';
+        header("Location: CariAktivitas.php?login=success");die;
     }
 }
 ?>
@@ -47,7 +50,6 @@ if (isset($_POST['submit'])) {
                     <small id="emailHelp" class="text-muted text-end">Digunakan untuk login, pastikan password
                         anda mudah diingat.</small>
                 </div>
-                <input type="hidden" value="volunteer" name="role">
                 <div class="form-group mb-3  d-flex flex-column">
                     <label for="nama" class="mb-1">Nama Lengkap *</label>
                     <input required type="text" class="form-control" id="nama" name="nama">

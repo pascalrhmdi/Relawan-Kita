@@ -3,6 +3,11 @@ $title = "Riwayat Pendaftaran Relawan";
 require_once './includes/header.php';
 require_once './db/connect.php';
 
+if (!isset($_SESSION['id_pengguna'])) {
+    header('location:./login.php');
+    die;
+}
+
 $id_pengguna = $_SESSION['id_pengguna'];
 // untuk ambil jumlah row apakah lebih dari 0
 $query = $pdo->query("SELECT COUNT(id_pengguna) as id FROM pengguna JOIN status USING(id_pengguna) WHERE pengguna.id_pengguna = $id_pengguna");
@@ -16,10 +21,7 @@ $halamanAktif = isset($_GET['halaman']) ? $_GET['halaman'] : 1;
 $awalData = ($menampilkanDataPerHalaman * $halamanAktif) - $menampilkanDataPerHalaman;
 
 // semua data diambil
-$results = $pdo->query("SELECT status.status,acara.judul_acara,acara.lokasi,acara.id_acara,jenis_acara.nama_jenis_acara,organisasi.nama AS nama_org FROM pengguna JOIN status USING(id_pengguna) 
-                        JOIN acara USING(id_acara) JOIN jenis_acara USING(id_jenis_acara) JOIN organisasi USING(id_organisasi) WHERE pengguna.id_pengguna = $id_pengguna
-                        LIMIT $awalData, $menampilkanDataPerHalaman");
-
+$results = $crud->getRiwayatPendaftaranRelawan($id_pengguna, $awalData, $menampilkanDataPerHalaman);
 ?>
 
 <!-- Judul -->
@@ -43,12 +45,10 @@ $results = $pdo->query("SELECT status.status,acara.judul_acara,acara.lokasi,acar
                 </tr>
             </thead>
             <tbody class="align-middle">
-                <?php
-                $i = ($menampilkanDataPerHalaman * $halamanAktif) - ($menampilkanDataPerHalaman - 1);
-                while ($r = $results->fetch(PDO::FETCH_ASSOC)) :
-                ?>
+                <?php $i = ($menampilkanDataPerHalaman * $halamanAktif) - ($menampilkanDataPerHalaman - 1); ?>
+                <?php foreach ($results as $count => $r) : ?>
                     <tr>
-                        <th scope="row" class="text-center"><?= $i; ?></th>
+                        <th scope="row" class="text-center"><?= $count+1; ?></th>
                         <td><?= $r['judul_acara']; ?></td>
                         <td><?= $r['nama_jenis_acara']; ?></td>
                         <td><?= $r['nama_org']; ?></td>
@@ -58,8 +58,7 @@ $results = $pdo->query("SELECT status.status,acara.judul_acara,acara.lokasi,acar
                             <a href="./viewaktivitas.php?id_acara=<?= $r['id_acara']; ?>" class="btn btn-sm btn-danger">Lihat Acara</a>
                         </td>
                     </tr>
-                <?php $i++;
-                endwhile ?>
+                <?php endforeach; ?>
             </tbody>
         </table>
     </div>

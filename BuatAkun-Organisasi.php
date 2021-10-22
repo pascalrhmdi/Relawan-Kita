@@ -1,26 +1,29 @@
 <?php
 require_once './db/connect.php';
 include_once 'includes/session.php';
+require_once './includes/auth_check.php';
 
 if (isset($_POST['submit'])) {
     $email = $_POST['email'];
     $password = $_POST['password'];
-    $hashedPassword = md5($password . $email);
-    $role = $_POST['role'];
     $nama = $_POST['nama'];
+    $role = 'organisasi';
     $deskripsi_organisasi = $_POST['deskripsi_organisasi'];
     $tahun_berdiri = $_POST['tahun_berdiri'];
 
-    $results = $crud->insertOrganisasi($email, $hashedPassword, $role, $nama, $deskripsi_organisasi, $tahun_berdiri);
+    $results = $user->insertUser($email, $password, $nama, $role, null, null);
     if (!$results) {
         $errorRegister = true;
     } else {
+        // insert organisasi
+        $crud->insertOrganisasi($pdo->lastInsertId(), $deskripsi_organisasi, $tahun_berdiri);
+
         // ambil akun lalu masukin di session
-        $result = $crud->getAccountOrganisasi($email, $hashedPassword);
-        $_SESSION['id_organisasi'] = $result['id_organisasi'];
+        $result = $user->getUser($email, md5($password . $email));
+        $_SESSION['id_pengguna'] = $result['id_pengguna'];
         $_SESSION['nama'] = $result['nama'];
         $_SESSION['role'] = $result['role'];
-        header("Location: CariAktivitas.php?login=success");
+        header("Location: ./organisasi/listacara.php?login=success");die;
     }
 }
 ?>
@@ -68,7 +71,6 @@ if (isset($_POST['submit'])) {
                                 include_once 'includes/errormessage.php';
                             }; ?>
                             <form class="user" method="post" action="#">
-                                <input type="hidden" value="organisasi" name="role">
                                 <div class="row">
                                     <div class="col-lg-6">
                                         <div class="row">
@@ -100,7 +102,7 @@ if (isset($_POST['submit'])) {
                                             <input type="text" class="form-control form-control-user" placeholder="Deskripsi Organisasi" required name="deskripsi_organisasi">
                                         </div>
                                         <div class="form-group">
-                                            <input type="number" class="form-control form-control-user" placeholder="Tanggal Berdiri" required name="tahun_berdiri">
+                                            <input type="number"  min="1900" max="<?= date("Y"); ?>" step="1" class="form-control form-control-user" placeholder="Tanggal Berdiri" required name="tahun_berdiri">
                                         </div>
                                     </div>
                                 </div>
