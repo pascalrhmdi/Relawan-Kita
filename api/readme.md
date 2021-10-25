@@ -15,6 +15,6 @@ Endpoints & params
 2. [POST] /api/volunteer/login.php `/login new volunteer`
    > body : email, password
 3. [GET] /api/volunteer/show.php?id=1 `get relawan user data`
-4. [POST] /api/volunteer/update.php?id=1 `update volunteer user data`
+4. [PUT] /api/volunteer/update.php?id=1 `update volunteer user data`
    > body : nama, alamat, nomor_telepon, jenis_kelamin, tanggal_lahir
 5. [GET] /api/volunteer/history.php?id=1&start=0&amount=3 `get user volunteer registration history`
