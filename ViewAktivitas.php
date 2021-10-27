@@ -21,28 +21,23 @@ if (isset($_POST['submit'])) {
     // kalo udah pencet submit menjadi calon relawan
     if (isset($_SESSION['id_pengguna'])) {
         $id_pengguna = $_SESSION['id_pengguna'];
+        $tanggal_batas_registrasi = $r['tanggal_batas_registrasi'];
         // klo udah login masukin ke tabel status
         // pakai try catch
         // Kalau berhasil berarti belum ada di tabel, masukin
         // kalau gagal, berarti dia udah menjadi calon relawan. kasih error message
         try {
-            if (date("Y-m-d") <= $r['tanggal_batas_registrasi']) {
-                $status = $crud->insertStatus($id_pengguna, $id_acara);
-                $message = "Anda berhasil menjadi calon Relawan di acara ini";
-                include_once './includes/successmessage.php';
-            } else {
-                $message = "Gagal mendaftar! Melebihi batas tanggal pendaftaran";
-                include_once './includes/errormessage.php';
-            }
+            if($tanggal_batas_registrasi < date('Y-m-d')) throw new Exception('Gagal mendaftar! Melebihi batas tanggal pendaftaran');
+            $status = $crud->insertStatus($id_pengguna, $id_acara);
+            $message = "Anda berhasil menjadi calon Relawan di acara ini";
+            include_once './includes/successmessage.php';
         } catch (PDOException $e) {
             $message = "Anda Sudah menjadi calon Relawan di acara ini";
             include_once './includes/errormessage.php';
+        } catch (Exception $e) {
+            $message = $e->getMessage();
+            include_once './includes/errormessage.php';
         }
-        // finally {
-        //     unset($_POST);
-        //     // header("Location: ".$_SERVER['PHP_SELF']."?id_acara=$id_acara");
-        //     exit;
-        // }
     } else {
         // Kalau belum login arahkan ke login
         $message = "Silahkan Login terlebih dahulu untuk mengajukan status menjadi calon relawan, <a href='login.php'>Klik disini untuk login</a>";

@@ -10,7 +10,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $email = $_POST['email'];
     $password = $_POST['password'];
     $new_password = md5($password . $email);
-
+    
     $result = $user->getUser($email, $new_password);
 
     if (!$result) {
@@ -35,7 +35,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 ?>
 
 <!-- Main Code -->
-
 <div class="row justify-content-center ">
     <div class="col-4">
         <h1 class="text-center mb-4"><?php echo $title ?> </h1>
@@ -64,9 +63,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 <button type="submit" name="submit" class="btn btn-primary btn-block fw-bold">Log in</button>
             </div>
             <!-- Belum dikasih link -->
-            <a href="#" class="text-end">Lupa Password?</a>
+            <a href="#" class="text-end d-block">Lupa Password?</a>
             <hr class="my-4">
-            <h5 class="text-center">Belum Punya Akun? <a href="BuatAkun-Relawan.php">Yuk Daftar!</a></h5>
+            <h5 class="text-center">Belum Punya Akun? <a style="font-size: 18px;" href="BuatAkun-Relawan.php">Yuk Daftar!</a></h5>
         </form>
     </div>
 </div>

@@ -232,8 +232,8 @@ $fetch_jenis_acara = $pdo->query("SELECT * FROM jenis_acara");
                         </div>
                         <div class="card-body">
                             <div class="table-responsive">
-                                <table class="table " id="dataTable" width="100%" cellspacing="0">
-                                    <thead class="table-dark">
+                                <table class="table table-bordered " id="dataTable" width="100%" cellspacing="0">
+                                    <thead class="table-dark text-center">
                                         <tr>
                                             <th>No</th>
                                             <th>Nama</th>
@@ -245,28 +245,28 @@ $fetch_jenis_acara = $pdo->query("SELECT * FROM jenis_acara");
                                             <th>Aksi</th>
                                         </tr>
                                     </thead>
-                                    <tbody>
+                                    <tbody class="align-middle">
                                         <?php $i = 1 ?>
                                         <?php while ($r = $results->fetch()) : ?>
                                             <tr>
                                                 <th scope="row" class="text-center"><?= $i; ?></th>
                                                 <td><?= $r["nama"]; ?></td>
                                                 <td><?= floor(date_diff(date_create($r["tanggal_lahir"]), date_create('now'))->format("%a") / 365); ?> Tahun</td>
-                                                <td><?= $r["jenis_kelamin"]; ?></td>
+                                                <td><?= $r["jenis_kelamin"]; ?></td>    
                                                 <td style="max-width: 250px;"><?= $r["alamat"]; ?></td>
                                                 <td><?= $r["nomor_telepon"]; ?></td>
                                                 <!-- kalau status menunggu secondary,  lolos success, gagal danger -->
                                                 <td>
                                                     <span class="font-weight-bold text-<?= $r['status'] == 'menunggu' ? 'secondary' : ($r['status'] == 'lolos' ? 'success' : 'danger'); ?>"><?= ucfirst($r['status']); ?></span>
                                                 </td>
-                                                <form method="POST" action="../functions/change-status.php">
-                                                    <input type="hidden" name="id_pengguna" value="<?= $r['id_pengguna'] ?>">
-                                                    <input type="hidden" name="id_acara" value="<?= $id_acara ?>">
-                                                    <td>
-                                                        <button type="submit" name="change_status" value="lolos" class="btn btn-success btn-sm text-capitalize">Terima</button>
-                                                        <button type="submit" name="change_status" value="gagal" class="btn btn-danger btn-sm text-capitalize">Tolak</button>
-                                                    </td>
-                                                </form>
+                                                <td>
+                                                    <form method="POST" action="../functions/change-status.php" >
+                                                        <input type="hidden" name="id_pengguna" value="<?= $r['id_pengguna'] ?>">
+                                                        <input type="hidden" name="id_acara" value="<?= $id_acara ?>">
+                                                            <button type="submit" name="change_status" value="lolos" class="btn btn-success btn-sm text-capitalize" style="width:100%; max-width: 80px">Terima</button>
+                                                            <button type="submit" name="change_status" value="gagal" class="btn btn-danger btn-sm text-capitalize mt-1" style="width:100%; max-width: 80px">Tolak</button>
+                                                    </form>
+                                                </td>
                                             </tr>
                                             <?php $i++; ?>
                                         <?php endwhile; ?>
