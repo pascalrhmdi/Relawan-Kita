@@ -185,6 +185,7 @@ class crud
             return false;
         }
     }
+
     public function getAcaraFiltered($awalData, $menampilkanDataPerHalaman, $judul_acara, $nama, $lokasi, $nama_jenis_acara)
     {
         try {
@@ -200,6 +201,30 @@ class crud
             j.nama_jenis_acara LIKE '%$nama_jenis_acara%'
             ORDER BY id_acara DESC
             LIMIT $awalData, $menampilkanDataPerHalaman";
+            $result = $this->db->query($sql);
+            return $result;
+        } catch (PDOException $e) {
+            echo $e->getMessage();
+            return false;
+        }
+    }
+
+    public function searchAcaraByKey($start, $amount, $key)
+    {
+        try {
+            $sql = "SELECT acara.judul_acara, acara.tanggal_acara, acara.lokasi, 
+            pengguna.nama,jenis_acara.nama_jenis_acara FROM acara
+            JOIN pengguna
+                USING (id_pengguna) 
+            JOIN jenis_acara
+                USING(id_jenis_acara) 
+            WHERE 
+            acara.judul_acara LIKE '%$key%' OR
+            acara.lokasi LIKE '%$key%' OR
+            pengguna.nama LIKE '%$key%' OR
+            jenis_acara.nama_jenis_acara LIKE '%$key%'
+            ORDER BY acara.id_acara DESC
+            LIMIT $start, $amount";
             $result = $this->db->query($sql);
             return $result;
         } catch (PDOException $e) {
@@ -224,6 +249,17 @@ class crud
             $result = $this->db->query($sql);
             return $result;
         } catch (PDOException $e) {
+            echo $e->getMessage();
+            return false;
+        }
+    }
+
+    public function getAcaraRegistrationDeadlineById($id){
+        try {
+            $sql = "SELECT tanggal_batas_registrasi FROM acara WHERE id_acara = $id";
+            $result = $this->db->query($sql);
+            return $result->fetch();
+        } catch (\Throwable $e) {
             echo $e->getMessage();
             return false;
         }
