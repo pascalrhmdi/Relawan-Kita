@@ -8,61 +8,72 @@ include("../../db/connect.php");
 $httpResponseCode;
 $response = [];
 
-// parse_str(file_get_contents('php://input'), $_PUT);
-// $userId = $_PUT['userId'] ?? null;
-// $eventId = $_PUT['eventId'] ?? null;
+$data = json_decode(file_get_contents('php://input'), true);
+$userId = $data['userId'] ?? null;
+$eventId = $data['eventId'] ?? null;
 
-$userId = $_POST['userId'] ?? null;
-$eventId = $_POST['eventId'] ?? null;
+// $userId = $_POST['userId'] ?? null;
+// $eventId = $_POST['eventId'] ?? null;
 
-if ($userId !== null && $eventId !== null && trim($userId)!== '' && trim($eventId)!=='') {
-    $event = $crud->getAcaraRegistrationDeadlineById($eventId);
+$requestMethod = $_SERVER["REQUEST_METHOD"];
 
-    // jika data tidak ditemukan
-    if (!$event) {
-        $httpResponseCode = 404;
+if ($requestMethod == 'POST') {
+    if ($userId !== null && $eventId !== null && trim($userId) !== '' && trim($eventId) !== '') {
+        $event = $crud->getAcaraRegistrationDeadlineById($eventId);
 
-        $response = [
-            'status' => $httpResponseCode,
-            'message' => 'Not Found',
-        ];
-    } else {
-        $eventRegistrationDeadline = $event['tanggal_batas_registrasi'];
+        // jika data tidak ditemukan
+        if (!$event) {
+            $httpResponseCode = 404;
 
-        // jika mendaftar sebelum deadline registrasi
-        if (date("Y-m-d") <= $eventRegistrationDeadline) {
-            try {
-                $crud->insertStatus($userId, $eventId);
+            $response = [
+                'status' => $httpResponseCode,
+                'message' => 'Not Found',
+            ];
+        } else {
+            $eventRegistrationDeadline = $event['tanggal_batas_registrasi'];
 
-                $httpResponseCode = 201;
+            // jika mendaftar sebelum deadline registrasi
+            if (date("Y-m-d") <= $eventRegistrationDeadline) {
+                try {
+                    $crud->insertStatus($userId, $eventId);
 
-                $response = [
-                    'status' => $httpResponseCode,
-                    'message' => 'Success'
-                ];
-            } catch (\Throwable $th) {
+                    $httpResponseCode = 201;
+
+                    $response = [
+                        'status' => $httpResponseCode,
+                        'message' => 'Success'
+                    ];
+                } catch (\Throwable $th) {
+                    $httpResponseCode = 409;
+
+                    $response = [
+                        'status' => $httpResponseCode,
+                        'message' => 'Failed to create data! User already registered in this event'
+                    ];
+                }
+            } else {
                 $httpResponseCode = 409;
 
                 $response = [
                     'status' => $httpResponseCode,
-                    'message' => 'Failed to create data! User already registered in this event'
+                    'message' => 'Failed to create data! Exceeded event registration deadline'
                 ];
             }
-        } else {
-            $httpResponseCode = 409;
-
-            $response = [
-                'status' => $httpResponseCode,
-                'message' => 'Failed to create data! Exceeded event registration deadline'
-            ];
         }
+    } else {
+        $httpResponseCode = 400;
+
+        $response = [
+            'status' => $httpResponseCode,
+            'message' => 'Please provide userId and eventId'
+        ];
     }
 } else {
-    $httpResponseCode = 400;
+    $httpResponseCode = 405;
 
     $response = [
         'status' => $httpResponseCode,
-        'message' => 'Please provide userId and eventId'
+        'message' => 'Method Not Allowed'
     ];
 }
 

@@ -1,5 +1,5 @@
 <?php
-// read all history
+// get all volunteer's registration history
 include('../headers.php');
 header("Access-Control-Allow-Methods: GET");
 
@@ -8,25 +8,35 @@ include("../../db/connect.php");
 $start = $_GET['start'] ?? null;
 $amount = $_GET['amount'] ?? null;
 $userId = $_GET['id'] ?? null;
+$requestMethod = $_SERVER["REQUEST_METHOD"];
 
 $httpResponseCode;
 $response = [];
 
-if (!empty($userId) && trim($start)!=='' && !empty($amount)) {
-    $result = $crud->getRiwayatPendaftaranRelawan($userId, $start, $amount);
-    $httpResponseCode = 200;
+if ($requestMethod == 'GET') {
+    if (!empty($userId) && trim($start) !== '' && !empty($amount)) {
+        $result = $crud->getRiwayatPendaftaranRelawan($userId, $start, $amount);
+        $httpResponseCode = 200;
 
-    $response = [
-        'status' => $httpResponseCode,
-        'message' => 'success',
-        'data' => $result
-    ];
+        $response = [
+            'status' => $httpResponseCode,
+            'message' => 'success',
+            'data' => $result
+        ];
+    } else {
+        $httpResponseCode = 400;
+
+        $response = [
+            'status' => $httpResponseCode,
+            'message' => 'Please provide user id, start and amount for data request'
+        ];
+    }
 } else {
-    $httpResponseCode = 400;
+    $httpResponseCode = 405;
 
     $response = [
         'status' => $httpResponseCode,
-        'message' => 'Please provide user id, start and amount for data request'
+        'message' => 'Method Not Allowed'
     ];
 }
 
