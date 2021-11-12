@@ -1,5 +1,5 @@
 <?php
-// login volunteer
+// register a new volunteer
 include('../headers.php');
 header("Access-Control-Allow-Methods: POST");
 
@@ -7,23 +7,29 @@ include("../../db/connect.php");
 
 $httpResponseCode;
 $response = [];
-$requestMethod = $_SERVER["REQUEST_METHOD"];
 
+$requestMethod = $_SERVER["REQUEST_METHOD"];
 $data = json_decode(file_get_contents('php://input'), true);
 
 if ($requestMethod == 'POST') {
-    if (!empty($data['email']) && !empty($data['password'])) {
-        $new_password = md5($data['password'] . $data['email']);
-        $userData = $user->getUser($data['email'], $new_password);
+    if (
+        !empty($data['email']) && !empty($data['password']) && !empty($data['nama']) && !empty($data['alamat'])
+        && !empty($data['nomor_telepon']) && !empty($data['jenis_kelamin']) && !empty($data['tanggal_lahir'])
+    ) {
+        $result = $user->insertUser($data['email'], $data['password'], $data['nama'], 'volunteer', $data['alamat'], $data['nomor_telepon']);
 
-        if (!$userData) {
-            $httpResponseCode = 404;
+        if (!$result) {
+            $httpResponseCode = 400;
 
             $response = [
                 'status' => $httpResponseCode,
-                'message' => 'Username or Password is incorrect! Please try again.'
+                'message' => 'Failed to register! Email had been registered, please use other email'
             ];
         } else {
+            $crud->insertRelawan($pdo->lastInsertId(), $data['jenis_kelamin'], $data['tanggal_lahir']);
+
+            $userData = $user->getUser($data['email'], md5($data['password'] . $data['email']));
+
             $httpResponseCode = 200;
 
             $response = [
@@ -41,7 +47,7 @@ if ($requestMethod == 'POST') {
 
         $response = [
             'status' => $httpResponseCode,
-            'message' => 'Failed to login!'
+            'message' => 'Failed to register!'
         ];
     }
 } else {

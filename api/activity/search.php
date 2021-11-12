@@ -1,5 +1,5 @@
 <?php
-// read all activity
+// search activity
 include('../headers.php');
 header("Access-Control-Allow-Methods: GET");
 
@@ -8,26 +8,36 @@ include("../../db/connect.php");
 $start = $_GET['start'] ?? null;
 $amount = $_GET['amount'] ?? null;
 $key = $_GET['key'] ?? null;
+$requestMethod = $_SERVER["REQUEST_METHOD"];
 
 $httpResponseCode;
 $response = [];
 
-if (trim($start) !== null && !empty($amount) && !empty($key)) {
-    $result = $crud->searchAcaraByKey($start,$amount,$key)->fetchAll();
+if ($requestMethod == 'GET') {
+    if (trim($start) !== null && !empty($amount) && !empty($key)) {
+        $result = $crud->searchAcaraByKey($start, $amount, $key)->fetchAll();
 
-    $httpResponseCode = 200;
+        $httpResponseCode = 200;
 
-    $response = [
-        'status' => $httpResponseCode,
-        'message' => 'success',
-        'data' => $result
-    ];
+        $response = [
+            'status' => $httpResponseCode,
+            'message' => 'success',
+            'data' => $result
+        ];
+    } else {
+        $httpResponseCode = 400;
+
+        $response = [
+            'status' => $httpResponseCode,
+            'message' => 'Please provide key, start and amount for data request'
+        ];
+    }
 } else {
-    $httpResponseCode = 400;
+    $httpResponseCode = 405;
 
     $response = [
         'status' => $httpResponseCode,
-        'message' => 'Please provide key, start and amount for data request'
+        'message' => 'Method Not Allowed'
     ];
 }
 
