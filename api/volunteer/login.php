@@ -14,14 +14,14 @@ $data = json_decode(file_get_contents('php://input'), true);
 if ($requestMethod == 'POST') {
     if (!empty($data['email']) && !empty($data['password'])) {
         $new_password = md5($data['password'] . $data['email']);
-        $userData = $user->getUser($data['email'], $new_password);
+        $userData = $user->getUserRelawanbyEmailAndPassword($data['email'], $new_password);
 
         if (!$userData) {
             $httpResponseCode = 404;
 
             $response = [
                 'status' => $httpResponseCode,
-                'message' => 'Username or Password is incorrect! Please try again.'
+                'message' => 'Incorrect username or password! Please try again.'
             ];
         } else {
             $httpResponseCode = 200;
@@ -29,11 +29,7 @@ if ($requestMethod == 'POST') {
             $response = [
                 'status' => $httpResponseCode,
                 'message' => 'success',
-                'data' => [
-                    'id_pengguna' => $userData['id_pengguna'],
-                    'nama' => $userData['nama'],
-                    'role' => $userData['role']
-                ]
+                'data' => $userData
             ];
         }
     } else {

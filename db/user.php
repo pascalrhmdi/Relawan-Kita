@@ -41,6 +41,25 @@ class user
         }
     }
 
+    public function getUserRelawanbyEmailAndPassword($email, $password){
+        try {
+            $sql = "SELECT pengguna.id_pengguna,pengguna.role,pengguna.nama,pengguna.alamat,
+            pengguna.nomor_telepon, relawan.*
+            FROM pengguna JOIN relawan ON pengguna.id_pengguna = relawan.id_pengguna
+            WHERE email = :email AND password = :password ";
+            $stmt = $this->db->prepare($sql);
+            $stmt->bindparam(':email', $email);
+            $stmt->bindparam(':password', $password);
+
+            $stmt->execute();
+            $result = $stmt->fetch();
+            return $result;
+        } catch (PDOException $e) {
+            echo $e->getMessage();
+            return false;
+        }
+    }
+
     // untuk mengecek apakah di 
     public function getUser($email, $password)
     {
