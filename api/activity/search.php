@@ -21,7 +21,7 @@ if ($requestMethod == 'GET') {
 
         $response = [
             'status' => $httpResponseCode,
-            'message' => 'success',
+            'message' => 'Sukses',
             'data' => $result
         ];
     } else {
@@ -29,7 +29,7 @@ if ($requestMethod == 'GET') {
 
         $response = [
             'status' => $httpResponseCode,
-            'message' => 'Please provide key, start and amount for data request'
+            'message' => 'Silahkan sediakan keyword pencarian, serta parameter awal data (start), dan jumlah data (amount) yang ingin didapatkan'
         ];
     }
 } else {
@@ -37,7 +37,7 @@ if ($requestMethod == 'GET') {
 
     $response = [
         'status' => $httpResponseCode,
-        'message' => 'Method Not Allowed'
+        'message' => 'Metode tidak diperbolehkan!'
     ];
 }
 

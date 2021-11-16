@@ -8,5 +8,6 @@ RewriteRule ^api/activity/search/([0-9a-zA-Z]+)$ api/activity/search.php?key=$1 
 
 RewriteRule ^api/volunteer/login$ api/volunteer/login.php [NC,L]
 RewriteRule ^api/volunteer/register$ api/volunteer/register.php [NC,L]
+RewriteRule ^api/volunteer/change-password$ api/volunteer/change_password.php [NC,L]
 RewriteRule ^api/volunteer/profile/([0-9]+)$ api/volunteer/profile.php?id=$1 [NC,L]
 RewriteRule ^api/volunteer/history/([0-9]+)$ api/volunteer/history.php?id=$1 [NC,L,QSA]
