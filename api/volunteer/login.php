@@ -21,14 +21,14 @@ if ($requestMethod == 'POST') {
 
             $response = [
                 'status' => $httpResponseCode,
-                'message' => 'Incorrect username or password! Please try again.'
+                'message' => 'Email atau Password salah!'
             ];
         } else {
             $httpResponseCode = 200;
 
             $response = [
                 'status' => $httpResponseCode,
-                'message' => 'success',
+                'message' => 'Sukses masuk',
                 'data' => $userData
             ];
         }
@@ -37,7 +37,7 @@ if ($requestMethod == 'POST') {
 
         $response = [
             'status' => $httpResponseCode,
-            'message' => 'Failed to login!'
+            'message' => 'Gagal masuk! Body tidak utuh'
         ];
     }
 } else {
@@ -45,7 +45,7 @@ if ($requestMethod == 'POST') {
 
     $response = [
         'status' => $httpResponseCode,
-        'message' => 'Method Not Allowed'
+        'message' => 'Metode tidak diizinkan!'
     ];
 }
 

@@ -23,23 +23,19 @@ if ($requestMethod == 'POST') {
 
             $response = [
                 'status' => $httpResponseCode,
-                'message' => 'Failed to register! Email had been registered, please use other email'
+                'message' => 'Gagal mendaftar! Email sudah terdaftar, gunakan email lain.'
             ];
         } else {
             $crud->insertRelawan($pdo->lastInsertId(), $data['jenis_kelamin'], $data['tanggal_lahir']);
 
-            $userData = $user->getUser($data['email'], md5($data['password'] . $data['email']));
+            $userData = $user->getUserRelawanbyEmailAndPassword($data['email'], md5($data['password'] . $data['email']));
 
             $httpResponseCode = 200;
 
             $response = [
                 'status' => $httpResponseCode,
-                'message' => 'success',
-                'data' => [
-                    'id_pengguna' => $userData['id_pengguna'],
-                    'nama' => $userData['nama'],
-                    'role' => $userData['role']
-                ]
+                'message' => 'Sukses mendaftar',
+                'data' => $userData
             ];
         }
     } else {
@@ -47,7 +43,7 @@ if ($requestMethod == 'POST') {
 
         $response = [
             'status' => $httpResponseCode,
-            'message' => 'Failed to register!'
+            'message' => 'Gagal mendaftar! Body tidak utuh'
         ];
     }
 } else {
@@ -55,7 +51,7 @@ if ($requestMethod == 'POST') {
 
     $response = [
         'status' => $httpResponseCode,
-        'message' => 'Method Not Allowed'
+        'message' => 'Metode tidak diizinkan!'
     ];
 }
 
