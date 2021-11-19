@@ -12,7 +12,8 @@ if (isset($_SESSION['role'])) {
 
 if (isset($_POST['nama_jenis_acara'])) {
     $namaJenisAcara = $_POST['nama_jenis_acara'];
-    $result = $pdo->query("INSERT INTO jenis_acara(nama_jenis_acara) VALUES ('$namaJenisAcara')");
+    $iconJenisAcara = $_POST['icon_jenis_acara'];
+    $result = $pdo->query("INSERT INTO jenis_acara(nama_jenis_acara,icon) VALUES ('$namaJenisAcara','$iconJenisAcara')");
     $result
         ? header('Location: ../admin/jenis-acara.php?addnewjenisacara=success')
         : header('Location: ../admin/jenis-acara.php?addnewjenisacara=failed');

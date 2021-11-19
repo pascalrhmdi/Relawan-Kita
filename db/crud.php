@@ -402,13 +402,15 @@ class crud
         }
     }
 
-    public function updateJenisAcara($id_jenis_acara, $nama_jenis_acara)
+    public function updateJenisAcara($id_jenis_acara, $nama_jenis_acara, $icon_jenis_acara)
     {
         try {
-            $sql = "UPDATE `jenis_acara` SET `nama_jenis_acara`= :nama_jenis_acara WHERE id_jenis_acara = :id_jenis_acara";
+            $sql = "UPDATE `jenis_acara` SET `nama_jenis_acara`= :nama_jenis_acara, `icon`=:icon_jenis_acara
+                    WHERE id_jenis_acara = :id_jenis_acara";
             $stmt = $this->db->prepare($sql);
             $stmt->bindparam(':id_jenis_acara', $id_jenis_acara);
             $stmt->bindparam(':nama_jenis_acara', $nama_jenis_acara);
+            $stmt->bindparam(':icon_jenis_acara', $icon_jenis_acara);
 
             $stmt->execute();
             return true;
