@@ -20,7 +20,7 @@ if ($requestMethod == 'GET') {
 
             $response = [
                 'status' => $httpResponseCode,
-                'message' => 'Not Found',
+                'message' => 'Data pengguna tidak ditemukan!',
                 'data' => []
             ];
         } else {
@@ -31,6 +31,7 @@ if ($requestMethod == 'GET') {
                 'message' => 'success',
                 'data' => [
                     'id_pengguna' => $userData['id_pengguna'],
+                    'email'=>$userData['email'],
                     'nama' => $userData['nama'],
                     'alamat' => $userData['alamat'],
                     'nomor_telepon' => $userData['nomor_telepon'],
@@ -44,7 +45,7 @@ if ($requestMethod == 'GET') {
 
         $response = [
             'status' => $httpResponseCode,
-            'message' => 'Please provide user id!'
+            'message' => 'Silahkan sediakan data id user'
         ];
     }
 } elseif ($requestMethod == 'PUT') {
@@ -62,7 +63,7 @@ if ($requestMethod == 'GET') {
 
                 $response = [
                     'status' => $httpResponseCode,
-                    'message' => 'Failed to update user data!'
+                    'message' => 'Terjadi kesalahan! Gagal memperbarui data pengguna'
                 ];
             } else {
                 $httpResponseCode = 200;
@@ -85,7 +86,7 @@ if ($requestMethod == 'GET') {
 
             $response = [
                 'status' => $httpResponseCode,
-                'message' => 'Failed to update!'
+                'message' => 'Body tidak utuh! Gagal memperbarui data pengguna'
             ];
         }
     } else {
@@ -93,7 +94,7 @@ if ($requestMethod == 'GET') {
 
         $response = [
             'status' => $httpResponseCode,
-            'message' => 'Please provide user id!'
+            'message' => 'Silahkan sediakan data id user'
         ];
     }
 } else {
@@ -101,7 +102,7 @@ if ($requestMethod == 'GET') {
 
     $response = [
         'status' => $httpResponseCode,
-        'message' => 'Method Not Allowed'
+        'message' => 'Metode tidak diperbolehkan!'
     ];
 }
 

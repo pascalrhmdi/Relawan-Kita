@@ -27,7 +27,7 @@ if ($requestMethod == 'POST') {
 
             $response = [
                 'status' => $httpResponseCode,
-                'message' => 'Not Found',
+                'message' => 'Acara tidak ditemukan!',
             ];
         } else {
             $eventRegistrationDeadline = $event['tanggal_batas_registrasi'];
@@ -41,14 +41,14 @@ if ($requestMethod == 'POST') {
 
                     $response = [
                         'status' => $httpResponseCode,
-                        'message' => 'Success'
+                        'message' => 'Selamat! Anda sukses mendaftar menjadi relawan pada acara ini'
                     ];
                 } catch (\Throwable $th) {
                     $httpResponseCode = 409;
 
                     $response = [
                         'status' => $httpResponseCode,
-                        'message' => 'Failed to create data! User already registered in this event'
+                        'message' => 'Gagal mendaftar menjadi relawan! Anda sudah terdaftar sebagai relawan pada acara ini'
                     ];
                 }
             } else {
@@ -56,7 +56,7 @@ if ($requestMethod == 'POST') {
 
                 $response = [
                     'status' => $httpResponseCode,
-                    'message' => 'Failed to create data! Exceeded event registration deadline'
+                    'message' => 'Gagal mendaftar menjadi relawan! Batas waktu pendaftaran relawan telah terlewat'
                 ];
             }
         }
@@ -65,7 +65,7 @@ if ($requestMethod == 'POST') {
 
         $response = [
             'status' => $httpResponseCode,
-            'message' => 'Please provide userId and eventId'
+            'message' => 'Silahkan sediakan data berupa id user (userId) dan id event (eventId)'
         ];
     }
 } else {
@@ -73,7 +73,7 @@ if ($requestMethod == 'POST') {
 
     $response = [
         'status' => $httpResponseCode,
-        'message' => 'Method Not Allowed'
+        'message' => 'Metode tidak diperbolehkan!'
     ];
 }
 

@@ -11,8 +11,7 @@ if (isset($_GET['id_acara'])) {
     $r = $results->fetch(PDO::FETCH_ASSOC);
 
     // pentotalan jumlah yang daftar
-    $hasil = $pdo->query("SELECT COUNT(*) as total FROM status WHERE id_acara = $id_acara")->fetch(PDO::FETCH_ASSOC);
-    $total_daftar = $hasil['total'];
+    $total_daftar = $r['total_pendaftar'];
 } else {
     header("Location: CariAktivitas.php");
 }

@@ -41,7 +41,8 @@ class user
         }
     }
 
-    public function getUserRelawanbyEmailAndPassword($email, $password){
+    public function getUserRelawanbyEmailAndPassword($email, $password)
+    {
         try {
             $sql = "SELECT pengguna.id_pengguna,pengguna.role,pengguna.nama,pengguna.alamat,
             pengguna.nomor_telepon, relawan.*
@@ -128,11 +129,27 @@ class user
             $stmt->bindparam(':nomor_telepon', $nomor_telepon);
             $stmt->bindparam(':id_pengguna', $id_pengguna);
 
-            if( $stmtRelawan->execute() && $stmt->execute()){
+            if ($stmtRelawan->execute() && $stmt->execute()) {
                 return true;
             };
 
             return false;
+        } catch (PDOException $e) {
+            echo $e->getMessage();
+            return false;
+        }
+    }
+
+    public function ubahPassword($id_pengguna, $email, $password_baru)
+    {
+        $password_encrypt = md5($password_baru . $email);
+        try {
+            $sql = "UPDATE pengguna SET password = :password_encrypt WHERE id_pengguna = :id_pengguna";
+            $stmt = $this->db->prepare($sql);
+            $stmt->bindparam(':password_encrypt', $password_encrypt);
+            $stmt->bindparam(':id_pengguna', $id_pengguna);
+
+            return $stmt->execute();
         } catch (PDOException $e) {
             echo $e->getMessage();
             return false;

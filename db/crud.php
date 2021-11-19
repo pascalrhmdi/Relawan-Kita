@@ -119,10 +119,14 @@ class crud
     public function getAcaraLimit($awalData, $menampilkanDataPerHalaman)
     {
         try {
-            $sql = "SELECT acara.*,pengguna.nama,jenis_acara.nama_jenis_acara 
+            $sql = "SELECT acara.id_acara,acara.judul_acara,acara.jumlah_kebutuhan,acara.tanggal_batas_registrasi,
+                    acara.tanggal_acara,acara.lokasi,acara.cover,pengguna.nama,jenis_acara.nama_jenis_acara, COUNT(status.id_acara) AS total_pendaftar 
                     FROM acara JOIN pengguna USING(id_pengguna) 
-                    JOIN jenis_acara USING(id_jenis_acara) ORDER BY acara.id_acara 
-                    DESC LIMIT $awalData, $menampilkanDataPerHalaman";
+                    JOIN jenis_acara USING(id_jenis_acara) 
+                    LEFT JOIN status USING(id_acara)
+                    GROUP BY acara.id_acara
+                    ORDER BY acara.id_acara DESC 
+                    LIMIT $awalData, $menampilkanDataPerHalaman";
             $result = $this->db->query($sql);
             return $result;
         } catch (PDOException $e) {
@@ -134,7 +138,9 @@ class crud
     public function getAcaraLimitOrdered($awalData, $menampilkanDataPerHalaman, $orderType)
     {
         try {
-            $sql = "SELECT * FROM acara JOIN pengguna USING(id_pengguna)
+            $sql = "SELECT acara.id_acara,acara.judul_acara,acara.jumlah_kebutuhan,acara.tanggal_batas_registrasi,
+                    acara.tanggal_acara,acara.lokasi,acara.cover,pengguna.nama,jenis_acara.nama_jenis_acara
+                    FROM acara JOIN pengguna USING(id_pengguna)
                     JOIN jenis_acara USING(id_jenis_acara) ORDER BY acara.id_acara $orderType 
                     LIMIT $awalData, $menampilkanDataPerHalaman";
             $result = $this->db->query($sql);
@@ -145,11 +151,14 @@ class crud
         }
     }
 
-    // digunakan di bagian admin : List Acara
+    // digunakan di bagian organisasi : List Acara
     public function getAcaraLimitByOrganisasi($awalData, $menampilkanDataPerHalaman, $id_pengguna)
     {
         try {
-            $sql = "SELECT * FROM acara LEFT JOIN organisasi USING(id_pengguna) LEFT JOIN jenis_acara USING(id_jenis_acara) WHERE id_pengguna = $id_pengguna LIMIT $awalData, $menampilkanDataPerHalaman";
+            $sql = "SELECT acara.id_acara,acara.judul_acara,acara.jumlah_kebutuhan,acara.tanggal_batas_registrasi,
+            acara.tanggal_acara,acara.lokasi,jenis_acara.nama_jenis_acara FROM acara LEFT JOIN organisasi USING(id_pengguna) 
+            LEFT JOIN jenis_acara USING(id_jenis_acara) 
+            WHERE id_pengguna = $id_pengguna LIMIT $awalData, $menampilkanDataPerHalaman";
             $result = $this->db->query($sql);
             return $result;
         } catch (PDOException $e) {
@@ -189,7 +198,8 @@ class crud
     public function getAcaraFiltered($awalData, $menampilkanDataPerHalaman, $judul_acara, $nama, $lokasi, $nama_jenis_acara)
     {
         try {
-            $sql = "SELECT * FROM acara a
+            $sql = "SELECT a.id_acara,a.judul_acara,a.jumlah_kebutuhan,a.tanggal_batas_registrasi,
+            a.tanggal_acara,a.lokasi,a.cover,p.nama,j.nama_jenis_acara FROM acara a
             JOIN pengguna p
                 USING (id_pengguna) 
             JOIN jenis_acara j
@@ -212,17 +222,21 @@ class crud
     public function searchAcaraByKey($start, $amount, $key)
     {
         try {
-            $sql = "SELECT acara.judul_acara, acara.tanggal_acara, acara.lokasi, 
-            pengguna.nama,jenis_acara.nama_jenis_acara FROM acara
+            $sql = "SELECT acara.id_acara,acara.judul_acara,acara.jumlah_kebutuhan,acara.tanggal_batas_registrasi,
+            acara.tanggal_acara,acara.lokasi,acara.cover,jenis_acara.nama_jenis_acara, 
+            COUNT(status.id_acara) AS total_pendaftar FROM acara
             JOIN pengguna
                 USING (id_pengguna) 
             JOIN jenis_acara
                 USING(id_jenis_acara) 
+            LEFT JOIN status
+                USING(id_acara)
             WHERE 
             acara.judul_acara LIKE '%$key%' OR
             acara.lokasi LIKE '%$key%' OR
             pengguna.nama LIKE '%$key%' OR
             jenis_acara.nama_jenis_acara LIKE '%$key%'
+            GROUP BY acara.id_acara
             ORDER BY acara.id_acara DESC
             LIMIT $start, $amount";
             $result = $this->db->query($sql);
@@ -238,7 +252,11 @@ class crud
     public function getAcaraById($id)
     {
         try {
-            $sql = "SELECT * FROM acara
+            $sql = "SELECT acara.id_acara,acara.judul_acara,acara.jumlah_kebutuhan,acara.tanggal_batas_registrasi,
+                    acara.tanggal_acara,acara.cover,acara.deskripsi_acara,
+                    acara.lokasi,jenis_acara.nama_jenis_acara,pengguna.nama,
+                    organisasi.tahun_berdiri, (SELECT COUNT(*) FROM status WHERE id_acara = $id) 
+                    AS total_pendaftar FROM acara
                     JOIN pengguna 
                         USING(id_pengguna) 
                     JOIN organisasi

@@ -22,7 +22,7 @@ if ($requestMethod == 'GET') {
 
         $response = [
             'status' => $httpResponseCode,
-            'message' => 'success',
+            'message' => 'Sukses',
             'data' => $result
         ];
     } elseif ($eventId !== null) {
@@ -34,7 +34,7 @@ if ($requestMethod == 'GET') {
 
             $response = [
                 'status' => $httpResponseCode,
-                'message' => 'success',
+                'message' => 'Sukses',
                 'data' => $result
             ];
         } else {
@@ -42,7 +42,7 @@ if ($requestMethod == 'GET') {
 
             $response = [
                 'status' => $httpResponseCode,
-                'message' => 'Not Found',
+                'message' => 'Acara Tidak Ditemukan!',
                 'data' => []
             ];
         }
@@ -51,7 +51,7 @@ if ($requestMethod == 'GET') {
 
         $response = [
             'status' => $httpResponseCode,
-            'message' => 'Please provide start and amount for data request'
+            'message' => 'Silahkan sediakan parameter awal data (start) dan jumlah data (amount) yang ingin didapatkan'
         ];
     }
 } else {
@@ -59,7 +59,7 @@ if ($requestMethod == 'GET') {
 
     $response = [
         'status' => $httpResponseCode,
-        'message' => 'Method Not Allowed'
+        'message' => 'Metode tidak diperbolehkan!'
     ];
 }
 
