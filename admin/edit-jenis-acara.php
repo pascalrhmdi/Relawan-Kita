@@ -92,14 +92,18 @@ if (isset($_GET['id'])) {
                                 <!-- id Jenis ACara -->
                                 <input type="hidden" name="id_jenis_acara" value="<?= $id_jenis_acara; ?>">
 
-                                <!-- Email -->
-                                <div class="form-group mb-3 row">
-                                    <label for="nama_jenis_acara" class="col-12">Nama Jenis Acara: *</label>
-                                    <div class="col-md-9">
+                                <div class="form-row">
+                                    <div class="form-group mb-3 col-lg-4">
+                                        <label for="nama_jenis_acara">Nama Jenis Acara: *</label>
                                         <input required type="text" class="form-control" id="nama_jenis_acara" name="nama_jenis_acara" value="<?= $result['nama_jenis_acara'] ?>">
                                     </div>
-                                    <div class="col-md-3">
-                                        <button type="submit" name="submit" class="btn btn-primary btn-block fw-bold">Update Jenis Acara</button>
+                                    <div class="form-group mb-3 col-lg-4">
+                                        <label for="nama_jenis_acara">Icon Jenis Acara: *</label>
+                                        <input required type="text" class="form-control" id="nama_jenis_acara" name="icon_jenis_acara" value="<?= $result['icon'] ?>">
+                                    </div>
+                                    <div class="form-group col-lg-4">
+                                        <label class="invisible">Submit</label>
+                                        <button type="submit" name="submit" class="w-100 btn btn-primary fw-bold mb-0 mt-auto">Update Jenis Acara</button>
                                     </div>
                                 </div>
                             </form>

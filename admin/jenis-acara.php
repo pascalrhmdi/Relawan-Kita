@@ -17,7 +17,7 @@ $row = $query->fetch();
 // total row
 $total = $row['id'];
 
-$menampilkanDataPerHalaman = 10;
+$menampilkanDataPerHalaman = 1000;
 $jumlahHalaman = ceil($total / $menampilkanDataPerHalaman);
 $halamanAktif = isset($_GET['halaman']) ? $_GET['halaman'] : 1;
 $awalData = ($menampilkanDataPerHalaman * $halamanAktif) - $menampilkanDataPerHalaman;
@@ -74,8 +74,8 @@ $results = $crud->getJenisAcaraLimit($awalData, $menampilkanDataPerHalaman);
 
                 <!-- Begin Page Content -->
                 <div class="container-fluid">
-                     <!-- Page Heading -->
-                     <h1 class="h3 mb-2 text-gray-800">Kelola Jenis Acara</h1>
+                    <!-- Page Heading -->
+                    <h1 class="h3 mb-2 text-gray-800">Kelola Jenis Acara</h1>
 
                     <?php
                     if (isset($_GET['addnewjenisacara'])) {
@@ -119,18 +119,21 @@ $results = $crud->getJenisAcaraLimit($awalData, $menampilkanDataPerHalaman);
                             <h6 class="m-0 font-weight-bold text-primary py-2">List Jenis Acara</h6>
                         </div>
                         <div class="card-body">
-                            <div class="row mb-3">
-                                <div class="col-md-7 align-self-center">
-                                    <h6>Total Jenis Acara Relawan Kita : <?= $total; ?></h6>
+                            <h6>Tambah Jenis Acara</h6>
+                            <form class="row" action="../functions/insert-jenis-acara.php" method="POST">
+                                <div class="col-lg-4 my-1">
+                                    <input type="text" class="form-control mr-1" id="nama_jenis_acara" placeholder="Nama Jenis Acara" name="nama_jenis_acara" maxlength='50' required>
                                 </div>
-                                <div class="col-md-5">
-                                    <!-- Insert Jenis Acara Baru-->
-                                    <form class="d-flex justify-content-end" action="../functions/insert-jenis-acara.php" method="POST">
-                                        <input type="text" class="form-control mr-1" id="nama_jenis_acara" placeholder="Tambah Jenis Acara" name="nama_jenis_acara" maxlength='50' required>
-                                        <button type="submit" name="submit" class="btn btn-primary">Add</button>
-                                    </form>
+                                <div class="col-lg-4 my-1">
+                                    <input type="text" class="form-control mr-1" id="icon_jenis_acara" placeholder="Icon Jenis Acara" name="icon_jenis_acara" maxlength='50' required>
+                                    <small class="font-italic">Lihat Icon di <a href="https://icons.expo.fyi/" target="_blank">sini</a>. Tipe icon : MaterialIcon</small>
                                 </div>
-                            </div>
+                                <div class="col-lg-4 my-1">
+                                    <button type="submit" name="submit" class="btn btn-primary w-100">Add</button>
+                                </div>
+                            </form>
+                            <hr class="mt-1">
+                            <h6>Total Jenis Acara Relawan Kita : <?= $total; ?></h6>
 
                             <!-- Table Jenis Acara -->
                             <?php if ($total > 0) : ?>
@@ -140,6 +143,7 @@ $results = $crud->getJenisAcaraLimit($awalData, $menampilkanDataPerHalaman);
                                             <tr>
                                                 <th scope="col" class="text-center">No.</th>
                                                 <th scope="col" class="text-center">Jenis Acara Organisasi</th>
+                                                <th scope="col" class="text-center">Icon</th>
                                                 <th scope="col" class="text-center" style="width: 250px;">Aksi</th>
                                             </tr>
                                         </thead>
@@ -151,6 +155,7 @@ $results = $crud->getJenisAcaraLimit($awalData, $menampilkanDataPerHalaman);
                                                 <tr>
                                                     <th scope="row" class="text-center"><?= $i; ?></th>
                                                     <td><?= is_null($r['nama_jenis_acara']) ? '-' : $r["nama_jenis_acara"]; ?></td>
+                                                    <td><?= is_null($r['icon']) ? '-' : $r["icon"]; ?></td>
                                                     <td>
                                                         <!-- Edit -->
                                                         <a href="./edit-jenis-acara.php?id=<?= $r['id_jenis_acara'] ?>" class="btn btn-sm btn-warning btn-sm">Edit</a>
