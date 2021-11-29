@@ -15,7 +15,15 @@ $response = [];
 
 if ($requestMethod == 'GET') {
     if (trim($start) !== null && !empty($amount) && !empty($key)) {
-        $result = $crud->searchAcaraByKey($start, $amount, $key)->fetchAll();
+        $queryKeyword = explode(":", $key);
+
+        // untuk query search berdasarkan kategori
+        if (count($queryKeyword) > 0 && $queryKeyword[0] == 'kategori') {
+            $result = $crud->searchAcaraByCategory($start, $amount, $queryKeyword[1])->fetchAll();
+        } else {
+            // untuk query search general
+            $result = $crud->searchAcaraByKey($start, $amount, $key)->fetchAll();
+        }
 
         $httpResponseCode = 200;
 
