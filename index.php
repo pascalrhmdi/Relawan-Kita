@@ -143,7 +143,7 @@ $acara = $crud->getAcaraLimitOrdered(0, 4, "DESC");
         <div class="row mt-3">
             <div class="col-12 my-2 d-flex justify-content-between">
                 <h4 class="font-weight-bold">Aksi Terbaru</h4>
-                <a href="cariaktivitas.php">Lihat Semua ></a>
+                <a href="CariAktivitas.php">Lihat Semua ></a>
             </div>
             <?php while ($r = $acara->fetch()) : ?>
                 <div class="col-3 mb-3 ">

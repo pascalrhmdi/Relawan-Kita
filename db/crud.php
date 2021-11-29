@@ -119,8 +119,9 @@ class crud
     public function getAcaraLimit($awalData, $menampilkanDataPerHalaman)
     {
         try {
-            $sql = "SELECT acara.id_acara,acara.judul_acara,acara.jumlah_kebutuhan,acara.tanggal_batas_registrasi,
-                    acara.tanggal_acara,acara.lokasi,acara.cover,pengguna.nama,jenis_acara.nama_jenis_acara, COUNT(status.id_acara) AS total_pendaftar 
+            $sql = "SELECT acara.id_acara,acara.judul_acara,acara.tanggal_batas_registrasi,
+                    acara.tanggal_acara,acara.lokasi,acara.cover,pengguna.nama,
+                    jenis_acara.nama_jenis_acara, COUNT(status.id_acara) AS total_pendaftar 
                     FROM acara JOIN pengguna USING(id_pengguna) 
                     JOIN jenis_acara USING(id_jenis_acara) 
                     LEFT JOIN status USING(id_acara)
@@ -222,8 +223,8 @@ class crud
     public function searchAcaraByKey($start, $amount, $key)
     {
         try {
-            $sql = "SELECT acara.id_acara,acara.judul_acara,acara.jumlah_kebutuhan,acara.tanggal_batas_registrasi,
-            acara.tanggal_acara,acara.lokasi,acara.cover,jenis_acara.nama_jenis_acara, 
+            $sql = "SELECT acara.id_acara,acara.judul_acara,acara.tanggal_batas_registrasi,
+            acara.tanggal_acara,acara.lokasi,acara.cover,jenis_acara.nama_jenis_acara, pengguna.nama,
             COUNT(status.id_acara) AS total_pendaftar FROM acara
             JOIN pengguna
                 USING (id_pengguna) 
@@ -247,6 +248,31 @@ class crud
         }
     }
 
+    public function searchAcaraByCategory($start, $amount, $key)
+    {
+        try {
+            $sql = "SELECT acara.id_acara,acara.judul_acara,acara.tanggal_batas_registrasi,
+            acara.tanggal_acara,acara.lokasi,acara.cover,jenis_acara.nama_jenis_acara, pengguna.nama,
+            COUNT(status.id_acara) AS total_pendaftar FROM acara
+            JOIN pengguna
+                USING (id_pengguna) 
+            JOIN jenis_acara
+                USING(id_jenis_acara) 
+            LEFT JOIN status
+                USING(id_acara)
+            WHERE 
+            jenis_acara.nama_jenis_acara LIKE '%$key%'
+            GROUP BY acara.id_acara
+            ORDER BY acara.id_acara DESC
+            LIMIT $start, $amount";
+            $result = $this->db->query($sql);
+            return $result;
+        } catch (PDOException $e) {
+            echo $e->getMessage();
+            return false;
+        }
+    }
+
     // digunakan untuk melihat acara dengan id.
     // sekaligus mengambil data apakah terdapat 
     public function getAcaraById($id)
@@ -254,7 +280,7 @@ class crud
         try {
             $sql = "SELECT acara.id_acara,acara.judul_acara,acara.jumlah_kebutuhan,acara.tanggal_batas_registrasi,
                     acara.tanggal_acara,acara.cover,acara.deskripsi_acara,
-                    acara.lokasi,jenis_acara.nama_jenis_acara,pengguna.nama,
+                    acara.lokasi,jenis_acara.nama_jenis_acara,pengguna.nama,pengguna.nomor_telepon,
                     organisasi.tahun_berdiri, (SELECT COUNT(*) FROM status WHERE id_acara = $id) 
                     AS total_pendaftar FROM acara
                     JOIN pengguna 
@@ -317,7 +343,7 @@ class crud
 
     public function getRiwayatPendaftaranRelawan($id_pengguna, $awalData, $dataPerHalaman){
         try {
-            $sql = "SELECT status.status, acara.judul_acara, acara.lokasi, acara.id_acara, jenis_acara.nama_jenis_acara,
+            $sql = "SELECT status.status, acara.judul_acara, acara.lokasi, acara.id_acara, acara.cover, jenis_acara.nama_jenis_acara,
                     pengguna.nama AS nama_org FROM status JOIN acara USING(id_acara) 
                     JOIN jenis_acara USING(id_jenis_acara) JOIN pengguna ON acara.id_pengguna = pengguna.id_pengguna 
                     WHERE status.id_pengguna = :id_pengguna
