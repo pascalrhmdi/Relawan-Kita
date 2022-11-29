@@ -3,6 +3,12 @@
 
 Relawan Kita are an Information System that helps distribute information on volunteer activities as well as volunteer data management.
 
+## Table Of Content
+- [Features](#features)
+- [Tech Stack](#tech-stack)
+- [Run Locally](#run-locally)
+- [Installation](#installation)
+- [Authors](#authors)
 
 ## Features
 This application has 3 roles namely volunteer, organization, and admin. each role has its own rights. Existing features include:
